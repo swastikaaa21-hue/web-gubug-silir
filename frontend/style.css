@@ -135,8 +135,23 @@ ul { list-style: none; }
 .nav-link:hover, .nav-link.active { color: var(--secondary); }
 
 .nav-actions { display: flex; gap: 1rem; align-items: center; }
-.cart-btn, .user-btn { position: relative; color: var(--text-muted); transition: var(--transition); padding: 0.5rem; }
-.cart-btn:hover, .user-btn:hover { color: var(--primary); }
+.cart-btn { position: relative; color: var(--text-muted); transition: var(--transition); padding: 0.5rem; }
+.cart-btn:hover { color: var(--primary); }
+
+.admin-badge {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.admin-badge:hover {
+    background-color: var(--primary);
+    color: white;
+}
 
 .cart-badge {
     position: absolute;
