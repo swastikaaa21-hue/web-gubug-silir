@@ -301,9 +301,9 @@ const app = {
         const qrisContainer = document.getElementById('qris-container');
         if (qrisContainer) {
             if (id === 'qris') {
-                qrisContainer.classList.remove('hidden');
+                qrisContainer.style.display = 'block';
             } else {
-                qrisContainer.classList.add('hidden');
+                qrisContainer.style.display = 'none';
             }
         }
     },
