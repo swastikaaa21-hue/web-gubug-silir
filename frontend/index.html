@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gubug Silir - Makanan Enak, Pengiriman Cepat</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-text">Gubug<span class="brand-highlight">Silir</span></span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-link active" data-nav="landing" onclick="app.showView('landing')">Beranda</button>
+            <button class="nav-link" data-nav="menu" onclick="app.showView('menu')">Menu</button>
+            <button class="nav-link" data-nav="promosi" onclick="app.showView('promosi')">Promosi</button>
+        </div>
+        <div class="nav-actions">
+            <button class="cart-btn" onclick="app.toggleCart()">
+                <i data-lucide="shopping-cart"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+            <button class="user-btn">
+                <i data-lucide="user"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main id="app-container">
+        
+        <!-- ==================== LANDING VIEW ==================== -->
+        <section id="view-landing" class="view active">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-overlay"></div>
+                <div class="hero-content animate-on-scroll">
+                    <div class="pill-badge">
+                        <span>🎉</span>
+                        <span>Siap untuk Merayakan?</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        Jadikan Acara Anda <br/>
+                        <span class="text-gradient">Tak Terlupakan</span>
+                    </h1>
+                    
+                    <p class="hero-desc">
+                        Pesan sekarang dan biarkan kami mengurus persiapan makanan sementara Anda menikmati perayaan bersama orang tercinta. Makanan enak, diantar cepat ke pintu Anda.
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="app.showView('menu')">
+                            Pesan Sekarang <i data-lucide="arrow-right"></i>
+                        </button>
+                        <button class="btn btn-secondary" onclick="app.showView('menu')">
+                            Jelajahi Menu
+                        </button>
+                    </div>
+                    
+                    <div class="features-strip">
+                        <div class="feature-item">
+                            <div class="feature-icon bg-orange"><i data-lucide="truck"></i></div>
+                            <div>
+                                <h4>Pengiriman Cepat</h4>
+                                <p>Tepat waktu, setiap saat</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-green"><i data-lucide="shield-check"></i></div>
+                            <div>
+                                <h4>Pembayaran Aman</h4>
+                                <p>100% terlindungi</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon bg-orange"><i data-lucide="star"></i></div>
+                            <div>
+                                <h4>Kualitas Terbaik</h4>
+                                <p>Pilihan terbaik untuk Anda</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="how-it-works">
+                <h2 class="section-title animate-on-scroll">Cara <span class="text-green">Kerjanya</span></h2>
+                <p class="section-subtitle animate-on-scroll stagger-1">Tiga langkah mudah untuk acara sempurna Anda</p>
+                
+                <div class="steps-container">
+                    <div class="step-card animate-on-scroll stagger-1">
+                        <div class="step-number bg-orange">1</div>
+                        <div class="step-icon bg-orange-light"><i data-lucide="shopping-bag"></i></div>
+                        <h3>Pilih Menu Anda</h3>
+                        <p>Jelajahi menu pilihan kami dan temukan hidangan favorit Anda dari berbagai pilihan masakan autentik.</p>
+                    </div>
+                    
+                    <div class="step-card animate-on-scroll stagger-2">
+                        <div class="step-number bg-green">2</div>
+                        <div class="step-icon bg-green-light"><i data-lucide="clock"></i></div>
+                        <h3>Buat Pesanan</h3>
+                        <p>Sesuaikan pesanan Anda, pilih tanggal pengiriman, dan bayar dengan aman secara online.</p>
+                    </div>
+                    
+                    <div class="step-card animate-on-scroll stagger-3">
+                        <div class="step-number bg-orange-alt">3</div>
+                        <div class="step-icon bg-orange-alt-light"><i data-lucide="truck"></i></div>
+                        <h3>Kami Antar!</h3>
+                        <p>Duduk dan bersantailah — makanan segar Anda akan diantar langsung ke depan pintu Anda.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Custom Layout -->
+            <footer class="footer-custom">
+                <!-- Top Yellow Section -->
+                <div class="footer-top animate-on-scroll">
+                    <div class="timer-icon">
+                        <i data-lucide="timer" stroke-width="1.5"></i>
+                    </div>
+                    <h3 class="footer-top-title">Kami Pastikan</h3>
+                    <h2 class="footer-top-subtitle">Pesanan Anda diantar tepat waktu</h2>
+                    <p class="footer-top-desc">Jika Anda sedang rapat, lembur, dan butuh semangat tambahan.<br>Beri tahu kami dan kami siap membantu</p>
+                    <div class="footer-top-actions">
+                        <button class="btn btn-red" onclick="app.showView('menu')">Pesan Sekarang</button>
+                        <span class="or-text">ATAU</span>
+                        <button class="btn btn-red">Hubungi Kami!</button>
+                    </div>
+                </div>
+
+                <!-- Bottom White Section -->
+                <div class="footer-bottom-custom animate-on-scroll stagger-1">
+                    <div class="footer-cols">
+                        <!-- Links Section -->
+                        <div class="footer-col-links">
+                            <h4 class="col-title">TAUTAN UTAMA</h4>
+                            <div class="links-grid">
+                                <ul>
+                                    <li><a href="#">Tentang Kami</a></li>
+                                    <li><a href="#">Hubungi Kami</a></li>
+                                    <li><a href="#">Syarat dan Ketentuan</a></li>
+                                </ul>
+                                <ul>
+                                    <li><a href="#">Kebijakan Privasi</a></li>
+                                    <li><a href="#">Lacak Pesanan</a></li>
+                                    <li><a href="#">Cabang Kami</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Center Logo -->
+                        <div class="footer-col-center">
+                            <div class="delivery-badge">
+                                <span class="badge-text-small">GubugSilir</span>
+                                <span class="badge-text-medium">Delivery</span>
+                                <span class="badge-text-large">1-500-505</span>
+                                <span class="badge-text-tiny">gubugsilir.id</span>
+                            </div>
+                        </div>
+
+                        <!-- Follow Us Section -->
+                        <div class="footer-col-follow">
+                            <h4 class="col-title">IKUTI KAMI</h4>
+                            <div class="social-icons">
+                                <a href="#" class="social-icon youtube"><i data-lucide="youtube"></i></a>
+                                <a href="#" class="social-icon twitter"><i data-lucide="twitter"></i></a>
+                                <a href="#" class="social-icon facebook"><i data-lucide="facebook"></i></a>
+                                <a href="#" class="social-icon instagram"><i data-lucide="instagram"></i></a>
+                                <a href="#" class="social-icon whatsapp"><i data-lucide="message-circle"></i></a>
+                            </div>
+                            <div class="app-stores">
+                                <button class="app-btn"><i data-lucide="apple"></i> App Store</button>
+                                <button class="app-btn"><i data-lucide="play"></i> Google Play</button>
+                            </div>
+                            <div class="email-contact">
+                                <i data-lucide="mail"></i> cs@gubugsilir.id
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="copyright-text">
+                        <p>Seluruh gambar dan materi dilindungi hak cipta dan merupakan milik Gubug Silir. Dilarang keras menggunakan atau menggandakan tanpa izin tertulis.</p>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+
+        <!-- ==================== MENU VIEW ==================== -->
+        <section id="view-menu" class="view hidden">
+            <div class="menu-header">
+                <h2>Menu Kami</h2>
+                <div class="search-bar">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="search-input" placeholder="Cari menu..." oninput="app.renderMenu()">
+                </div>
+            </div>
+            
+            <div class="category-filters" id="category-filters">
+                <!-- Categories rendered here -->
+            </div>
+            
+            <div class="menu-grid" id="menu-grid">
+                <!-- Menu items rendered here -->
+            </div>
+        </section>
+
+        <!-- ==================== PROMOSI VIEW ==================== -->
+        <section id="view-promosi" class="view hidden">
+            <div class="menu-header">
+                <h2>Promo & Penawaran Spesial</h2>
+            </div>
+            
+            <div class="promosi-grid animate-on-scroll">
+                <div class="promo-card">
+                    <div class="promo-badge">PROMO SPESIAL</div>
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop" alt="Promo" class="promo-img">
+                    <div class="promo-content">
+                        <h3>Diskon 20% Akhir Pekan</h3>
+                        <p>Nikmati diskon 20% untuk semua pembelian di atas Rp 150.000 menggunakan kode promo <strong>WEEKEND20</strong>.</p>
+                        <button class="btn btn-primary btn-block">Klaim Promo</button>
+                    </div>
+                </div>
+                
+                <div class="promo-card stagger-1">
+                    <div class="promo-badge bg-green">MENU BARU</div>
+                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&h=300&fit=crop" alt="Promo" class="promo-img">
+                    <div class="promo-content">
+                        <h3>Paket Hemat Keluarga</h3>
+                        <p>Makan kenyang sekeluarga dengan paket spesial, gratis 4 minuman dingin segar.</p>
+                        <button class="btn btn-secondary btn-block">Lihat Detail</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== CART DRAWER ==================== -->
+        <div class="cart-overlay hidden" id="cart-overlay" onclick="app.toggleCart()"></div>
+        <div class="cart-drawer hidden" id="cart-drawer">
+            <div class="cart-header">
+                <h3>Keranjang Anda</h3>
+                <button class="close-btn" onclick="app.toggleCart()"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items rendered here -->
+            </div>
+            
+            <div class="cart-footer">
+                <div class="cart-summary">
+                    <span>Total:</span>
+                    <span class="cart-total" id="cart-total-price">Rp 0</span>
+                </div>
+                <button class="btn btn-primary btn-block mt-4" onclick="app.showCheckout()">Bayar</button>
+            </div>
+        </div>
+
+        <!-- ==================== CHECKOUT VIEW ==================== -->
+        <section id="view-checkout" class="view hidden">
+            <div class="checkout-container">
+                <button class="btn-back" onclick="app.showView('menu')"><i data-lucide="arrow-left"></i> Kembali ke Menu</button>
+                <h2>Pembayaran</h2>
+                
+                <div class="checkout-grid">
+                    <div class="checkout-form">
+                        <div class="form-section">
+                            <h3>Metode Pembayaran</h3>
+                            <div class="payment-methods" id="payment-methods">
+                                <!-- Payment options rendered here -->
+                            </div>
+                            
+                            <!-- QRIS Display -->
+                            <div id="qris-container" class="hidden mt-4" style="text-align: center; padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 1rem; box-shadow: var(--shadow-md);">
+                                <h4 style="margin-bottom: 1rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;">Scan QRIS untuk Membayar</h4>
+                                <img src="/static/qris.jpeg" alt="QRIS" style="max-width: 280px; margin: 0 auto; border-radius: 0.5rem; padding: 0.5rem; border: 1px solid #e5e7eb;">
+                                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Silakan scan menggunakan aplikasi Mobile Banking atau E-Wallet pilihan Anda.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section mt-4">
+                            <h3>Catatan Tambahan</h3>
+                            <textarea id="order-notes" placeholder="Ada pesanan khusus? (misal: Jangan terlalu pedas)"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-summary">
+                        <h3>Ringkasan Pesanan</h3>
+                        <div class="summary-items" id="checkout-summary-items">
+                            <!-- Summary items -->
+                        </div>
+                        <div class="summary-total">
+                            <span>Total Pembayaran</span>
+                            <span id="checkout-total-price">Rp 0</span>
+                        </div>
+                        <button class="btn btn-primary btn-block mt-4" onclick="app.processCheckout()">Buat Pesanan</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== RECEIPT VIEW ==================== -->
+        <section id="view-receipt" class="view hidden">
+            <div class="receipt-card">
+                <div class="receipt-icon"><i data-lucide="check-circle"></i></div>
+                <h2>Pesanan Berhasil!</h2>
+                <p>Pesanan Anda telah diterima dan sedang diproses.</p>
+                
+                <div class="receipt-details">
+                    <div class="receipt-row">
+                        <span>ID Pesanan:</span>
+                        <span id="receipt-order-id" class="font-bold">#ORD-123</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Total Bayar:</span>
+                        <span id="receipt-total" class="font-bold">Rp 0</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Metode Pembayaran:</span>
+                        <span id="receipt-payment" class="font-bold">Tunai</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-block mt-4" onclick="app.showView('landing'); app.clearCart();">Kembali ke Beranda</button>
+            </div>
+        </section>
+
+        <!-- ==================== FLOATING CART BAR ==================== -->
+        <div id="floating-cart" class="floating-cart" onclick="app.showCheckout()">
+            <div class="floating-cart-info">
+                <span id="floating-cart-count" class="floating-badge">0</span>
+                <span class="floating-text">Pesanan Anda</span>
+            </div>
+            <div class="floating-cart-action">
+                <span id="floating-cart-total">Rp 0</span>
+                <i data-lucide="chevron-right"></i>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- App JS -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
