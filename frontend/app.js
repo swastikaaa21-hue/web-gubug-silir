@@ -318,6 +318,27 @@ const app = {
         }
     },
 
+    sendWAProof() {
+        if (state.cart.length === 0) {
+            alert("Keranjang Anda kosong!");
+            return;
+        }
+
+        let message = "Hallo kak, aku pesan\n";
+        state.cart.forEach(item => {
+            message += `- ${item.qty}x ${item.name} (${this.formatMoney(item.price * item.qty)})\n`;
+        });
+
+        const notes = document.getElementById('order-notes').value;
+        if (notes && notes.trim() !== '') {
+            message += `\nCatatan: ${notes.trim()}`;
+        }
+
+        const encodedMessage = encodeURIComponent(message);
+        const waUrl = `https://wa.me/62895414999978?text=${encodedMessage}`;
+        window.open(waUrl, '_blank');
+    },
+
     renderCheckoutSummary() {
         const container = document.getElementById('checkout-summary-items');
         
