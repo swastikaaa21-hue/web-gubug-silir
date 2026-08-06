@@ -65,6 +65,9 @@ def get_menu():
 
 @app.post("/api/orders")
 def create_order(order: Order):
+    new_order_id = 999
+    is_mock = True
+    
     if supabase:
         try:
             # Insert Order
@@ -84,17 +87,14 @@ def create_order(order: Order):
                     "menu_item_id": item.menu_item_id,
                     "quantity": item.quantity
                 }).execute()
-                
-            return {"success": True, "order_id": new_order_id}
+            
+            is_mock = False
         except Exception as e:
             print(f"Supabase error: {e}")
-            # Fallback success
-            return {"success": True, "order_id": 999, "warning": "Saved to mock (Supabase error)"}
+            # Fallback to mock ID if insertion fails
+            new_order_id = 999
     
-    # Jika tidak ada Supabase, kita gunakan ID pesanan palsu (999)
-    new_order_id = 999
-
-    # [TAMBAHAN] Integrasi Midtrans Snap jika pembayaran menggunakan QRIS
+    # Integrasi Midtrans Snap jika pembayaran menggunakan QRIS
     snap_token = None
     if order.payment_method == "qris":
         try:
@@ -106,20 +106,22 @@ def create_order(order: Order):
                 },
                 "enabled_payments": ["other_qris"]
             }
-            # Jika Anda belum memasukkan MIDTRANS_SERVER_KEY yang asli, fungsi ini akan gagal.
-            # Oleh karena itu, pastikan menambahkan try-except yang menanganinya dengan elegan.
             snap_response = snap.create_transaction(transaction)
             snap_token = snap_response['token']
         except Exception as e:
             print(f"Gagal membuat transaksi Midtrans: {e}")
-            # Jika gagal, token dikosongkan. Nanti frontend akan memunculkan pesan peringatan.
             snap_token = None
 
-    return {
+    response = {
         "success": True, 
         "order_id": new_order_id,
         "snap_token": snap_token
     }
+    
+    if is_mock:
+        response["warning"] = "Saved to mock (Supabase error or not configured)"
+        
+    return response
 
 @app.post("/api/webhook/midtrans")
 async def midtrans_webhook(request: Request):
