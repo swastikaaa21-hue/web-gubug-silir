@@ -61,8 +61,8 @@
                     </div>
 
                     <h1 class="hero-title">
-                        Jadikan Acara Anda <br />
-                        <span class="text-gradient">Tak Terlupakan</span>
+                        Ngopi cari <br />
+                        <span class="text-gradient">Inspirasi</span>
                     </h1>
 
                     <p class="hero-desc">
@@ -151,7 +151,8 @@
                     <div class="footer-top-actions">
                         <button class="btn btn-red" onclick="app.showView('menu')">Pesan Sekarang</button>
                         <span class="or-text">ATAU</span>
-                        <button class="btn btn-red">Hubungi Kami!</button>
+                        <button class="btn btn-red"
+                            onclick="window.open('https://wa.me/62895414999978', '_blank')">Hubungi Kami!</button>
                     </div>
                 </div>
 
@@ -160,14 +161,19 @@
                     <div class="footer-cols">
                         <!-- Follow Us Section (Centered) -->
                         <div class="footer-col-follow" style="flex: none; width: 100%; text-align: center;">
-                            <h4 class="col-title">HUBUNGI KAMI & PEMBAYARAN</h4>
+                            <h4 class="col-title">HUBUNGI KAMI</h4>
                             <div class="social-icons" style="justify-content: center; margin-bottom: 0.5rem;">
-                                <a href="https://wa.me/62895414999978" target="_blank" class="social-icon whatsapp" title="WhatsApp Kami">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12.01 2.01c-5.52 0-9.99 4.47-9.99 9.99 0 1.95.55 3.77 1.5 5.31L2 22l4.82-1.52c1.47.88 3.19 1.41 5.19 1.41 5.52 0 9.99-4.47 9.99-9.99S17.53 2.01 12.01 2.01zM17.13 15.3c-.24.68-1.4 1.25-1.93 1.34-.51.09-1.18.25-3.34-.63-2.61-1.07-4.29-3.75-4.42-3.92-.13-.18-1.06-1.41-1.06-2.68 0-1.28.66-1.92.89-2.18.24-.26.51-.32.68-.32.18 0 .35 0 .5.01.17.01.4-.07.61.45.23.54.74 1.81.8 1.96.07.15.11.33.02.5-.09.18-.13.3-.26.45-.13.15-.28.32-.39.43-.13.11-.26.24-.11.5.15.26.66 1.1 1.41 1.76.96.86 1.79 1.12 2.05 1.25.26.13.41.11.56-.06.15-.18.66-.77.84-1.04.18-.26.35-.22.59-.13.24.09 1.54.72 1.8 1.85.85.13.15.22.24.26.37.05.13.01.37-.23 1.05z" />
+                                <a href="https://wa.me/62895414999978" target="_blank" class="social-icon whatsapp"
+                                    title="WhatsApp Kami">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="currentColor">
+                                        <path
+                                            d="M12.01 2.01c-5.52 0-9.99 4.47-9.99 9.99 0 1.95.55 3.77 1.5 5.31L2 22l4.82-1.52c1.47.88 3.19 1.41 5.19 1.41 5.52 0 9.99-4.47 9.99-9.99S17.53 2.01 12.01 2.01zM17.13 15.3c-.24.68-1.4 1.25-1.93 1.34-.51.09-1.18.25-3.34-.63-2.61-1.07-4.29-3.75-4.42-3.92-.13-.18-1.06-1.41-1.06-2.68 0-1.28.66-1.92.89-2.18.24-.26.51-.32.68-.32.18 0 .35 0 .5.01.17.01.4-.07.61.45.23.54.74 1.81.8 1.96.07.15.11.33.02.5-.09.18-.13.3-.26.45-.13.15-.28.32-.39.43-.13.11-.26.24-.11.5.15.26.66 1.1 1.41 1.76.96.86 1.79 1.12 2.05 1.25.26.13.41.11.56-.06.15-.18.66-.77.84-1.04.18-.26.35-.22.59-.13.24.09 1.54.72 1.8 1.85.85.13.15.22.24.26.37.05.13.01.37-.23 1.05z" />
                                     </svg>
                                 </a>
-                                <a href="#" onclick="document.getElementById('qris-modal').style.display='flex'; return false;" class="social-icon" style="background: var(--primary);" title="Lihat QRIS Kami">
+                                <a href="#"
+                                    onclick="document.getElementById('qris-modal').style.display='flex'; return false;"
+                                    class="social-icon" style="background: var(--primary);" title="Lihat QRIS Kami">
                                     <i data-lucide="qr-code"></i>
                                 </a>
                             </div>
@@ -359,14 +365,19 @@
             </div>
         </div>
 
-    <!-- QRIS Modal -->
-    <div id="qris-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;" onclick="this.style.display='none'">
-        <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center;" onclick="event.stopPropagation()">
-            <h3 style="margin-top: 0; margin-bottom: 1rem; color: #333;">QRIS Pembayaran</h3>
-            <img src="/static/qris.jpeg" style="max-width: 100%; max-height: 60vh; border-radius: 4px;" alt="QRIS Gubug Silir" />
-            <button onclick="document.getElementById('qris-modal').style.display='none'" style="margin-top: 1rem; padding: 0.5rem 1.5rem; border: none; border-radius: 4px; background: var(--primary); color: white; cursor: pointer; font-weight: bold; width: 100%;">Tutup</button>
+        <!-- QRIS Modal -->
+        <div id="qris-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;"
+            onclick="this.style.display='none'">
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center;"
+                onclick="event.stopPropagation()">
+                <h3 style="margin-top: 0; margin-bottom: 1rem; color: #333;">QRIS Pembayaran</h3>
+                <img src="/static/qris.jpeg" style="max-width: 100%; max-height: 60vh; border-radius: 4px;"
+                    alt="QRIS Gubug Silir" />
+                <button onclick="document.getElementById('qris-modal').style.display='none'"
+                    style="margin-top: 1rem; padding: 0.5rem 1.5rem; border: none; border-radius: 4px; background: var(--primary); color: white; cursor: pointer; font-weight: bold; width: 100%;">Tutup</button>
+            </div>
         </div>
-    </div>
 
     </main>
 
