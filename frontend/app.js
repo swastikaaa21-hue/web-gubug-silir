@@ -5,9 +5,8 @@ const state = {
     currentView: 'landing',
     searchQuery: '',
     activeCategory: 'Semua',
-    selectedPayment: '',
+    selectedPayment: 'qris',
     paymentMethods: [
-        { id: 'cash', name: 'Tunai', icon: 'banknote', color: 'text-green' },
         { id: 'qris', name: 'QRIS', icon: 'qr-code', color: 'text-gray' },
     ],
     categories: [
@@ -56,6 +55,7 @@ const app = {
         // Render Initial UI
         this.renderCategories();
         this.renderPaymentMethods();
+        this.selectPayment('qris');
         
         // Setup Scroll Animations
         this.setupScrollAnimations();
@@ -299,21 +299,12 @@ const app = {
         this.renderPaymentMethods();
         
         const qrisContainer = document.getElementById('qris-container');
-        const cashContainer = document.getElementById('cash-container');
         
         if (qrisContainer) {
             if (id === 'qris') {
                 qrisContainer.style.display = 'block';
             } else {
                 qrisContainer.style.display = 'none';
-            }
-        }
-        
-        if (cashContainer) {
-            if (id === 'cash') {
-                cashContainer.style.display = 'block';
-            } else {
-                cashContainer.style.display = 'none';
             }
         }
     },
