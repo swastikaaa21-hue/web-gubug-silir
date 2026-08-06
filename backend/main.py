@@ -5,6 +5,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import midtransclient
+from fastapi import Request
 
 load_dotenv()
 
@@ -19,6 +21,13 @@ if SUPABASE_URL and SUPABASE_KEY and SUPABASE_URL != "https://your-project-id.su
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
     except Exception as e:
         print(f"Failed to initialize Supabase: {e}")
+
+# Konfigurasi Midtrans
+MIDTRANS_SERVER_KEY = os.getenv("MIDTRANS_SERVER_KEY", "SB-Mid-server-XXXXXXXX")
+snap = midtransclient.Snap(
+    is_production=False,
+    server_key=MIDTRANS_SERVER_KEY
+)
 
 # Models
 class OrderItem(BaseModel):
@@ -82,7 +91,60 @@ def create_order(order: Order):
             # Fallback success
             return {"success": True, "order_id": 999, "warning": "Saved to mock (Supabase error)"}
     
-    return {"success": True, "order_id": 12345, "warning": "Saved to mock (No Supabase config)"}
+    # Jika tidak ada Supabase, kita gunakan ID pesanan palsu (999)
+    new_order_id = 999
+
+    # [TAMBAHAN] Integrasi Midtrans Snap jika pembayaran menggunakan QRIS
+    snap_token = None
+    if order.payment_method == "qris":
+        try:
+            # Buat permintaan transaksi ke Midtrans
+            transaction = {
+                "transaction_details": {
+                    "order_id": f"ORDER-{new_order_id}-{int(order.total_amount)}",
+                    "gross_amount": int(order.total_amount)
+                },
+                "enabled_payments": ["other_qris"]
+            }
+            # Jika Anda belum memasukkan MIDTRANS_SERVER_KEY yang asli, fungsi ini akan gagal.
+            # Oleh karena itu, pastikan menambahkan try-except yang menanganinya dengan elegan.
+            snap_response = snap.create_transaction(transaction)
+            snap_token = snap_response['token']
+        except Exception as e:
+            print(f"Gagal membuat transaksi Midtrans: {e}")
+            # Jika gagal, token dikosongkan. Nanti frontend akan memunculkan pesan peringatan.
+            snap_token = None
+
+    return {
+        "success": True, 
+        "order_id": new_order_id,
+        "snap_token": snap_token
+    }
+
+@app.post("/api/webhook/midtrans")
+async def midtrans_webhook(request: Request):
+    """
+    Sensor otomatis dari Midtrans.
+    Fungsi ini akan dipanggil oleh server Midtrans setiap kali ada pembaruan status pembayaran.
+    """
+    try:
+        data = await request.json()
+        order_id_string = data.get("order_id", "")
+        transaction_status = data.get("transaction_status", "")
+        
+        # Ekstrak ID pesanan asli dari format "ORDER-123-50000"
+        order_id = int(order_id_string.split("-")[1])
+        
+        # Jika transaksi sukses (settlement atau capture)
+        if transaction_status in ["settlement", "capture"]:
+            if supabase:
+                supabase.table("orders").update({"status": "paid"}).eq("id", order_id).execute()
+                print(f"Pesanan {order_id} lunas!")
+        
+        return {"status": "ok"}
+    except Exception as e:
+        print(f"Webhook error: {e}")
+        raise HTTPException(status_code=500, detail="Webhook processing failed")
 
 # Mount static frontend files
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")

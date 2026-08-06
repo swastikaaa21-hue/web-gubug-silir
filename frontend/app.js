@@ -348,14 +348,36 @@ const app = {
         const result = await submitOrder(orderData);
         
         if (result.success) {
-            // Show receipt
-            document.getElementById('receipt-order-id').innerText = `#ORD-${result.order_id}`;
-            document.getElementById('receipt-total').innerText = this.formatMoney(total);
-            document.getElementById('receipt-payment').innerText = state.paymentMethods.find(p => p.id === state.selectedPayment).name;
-            
-            this.showView('receipt');
+            const showReceipt = () => {
+                document.getElementById('receipt-order-id').innerText = `#ORD-${result.order_id}`;
+                document.getElementById('receipt-total').innerText = this.formatMoney(total);
+                document.getElementById('receipt-payment').innerText = state.paymentMethods.find(p => p.id === state.selectedPayment).name;
+                this.showView('receipt');
+            };
+
+            if (result.snap_token) {
+                // Trigger Midtrans Snap
+                window.snap.pay(result.snap_token, {
+                    onSuccess: function(result){
+                        showReceipt();
+                    },
+                    onPending: function(result){
+                        alert("Menunggu pembayaran...");
+                        showReceipt();
+                    },
+                    onError: function(result){
+                        alert("Pembayaran gagal!");
+                    },
+                    onClose: function(){
+                        alert('Anda menutup pop-up tanpa menyelesaikan pembayaran');
+                    }
+                });
+            } else {
+                // Untuk Tunai atau jika token tidak ada
+                showReceipt();
+            }
         } else {
-            alert("Pembayaran gagal. Silakan coba lagi.");
+            alert("Pesanan gagal diproses. Silakan coba lagi.");
         }
     },
 
