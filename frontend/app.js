@@ -417,6 +417,16 @@ const app = {
 
     // --- Admin Logic ---
     adminToken: null,
+
+    openAdminModal() {
+        const modal = document.getElementById('admin-login-modal');
+        modal.style.display = 'flex';
+        // Trigger reflow to ensure transition works
+        void modal.offsetWidth;
+        modal.style.opacity = '1';
+        document.querySelector('#admin-login-modal .modal-content').style.transform = 'scale(1)';
+        document.getElementById('admin-password').focus();
+    },
     
     closeAdminModal() {
         document.getElementById('admin-login-modal').style.opacity = '0';
