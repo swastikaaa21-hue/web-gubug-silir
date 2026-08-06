@@ -178,7 +178,7 @@ const app = {
                         <p class="menu-desc">${item.desc || item.description || ''}</p>
                         <div class="menu-footer">
                             <span class="menu-price">${this.formatMoney(item.price)}</span>
-                            <button class="add-btn" onclick="app.addToCart(${item.id})">
+                            <button class="add-btn" onclick="app.addToCart(event, ${item.id})">
                                 <i data-lucide="plus"></i>
                             </button>
                         </div>
@@ -190,7 +190,7 @@ const app = {
         lucide.createIcons();
     },
 
-    addToCart(id) {
+    addToCart(event, id) {
         const item = state.menu.find(i => i.id === id);
         if(!item) return;
 
