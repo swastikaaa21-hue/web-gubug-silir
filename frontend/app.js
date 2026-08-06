@@ -413,6 +413,181 @@ const app = {
 
     formatMoney(amount) {
         return 'Rp ' + amount.toLocaleString('id-ID');
+    },
+
+    // --- Admin Logic ---
+    adminToken: null,
+    
+    closeAdminModal() {
+        document.getElementById('admin-login-modal').style.opacity = '0';
+        document.querySelector('#admin-login-modal .modal-content').style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            document.getElementById('admin-login-modal').style.display = 'none';
+        }, 300);
+    },
+
+    async loginAdmin() {
+        const password = document.getElementById('admin-password').value;
+        try {
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+            if(res.ok) {
+                const data = await res.json();
+                this.adminToken = data.token;
+                
+                // Show modal animation
+                document.getElementById('admin-login-modal').style.display = 'flex';
+                // Trigger reflow
+                void document.getElementById('admin-login-modal').offsetWidth;
+                document.getElementById('admin-login-modal').style.opacity = '1';
+                document.querySelector('#admin-login-modal .modal-content').style.transform = 'scale(1)';
+                
+                setTimeout(() => {
+                    this.closeAdminModal();
+                    this.showView('admin');
+                    this.switchAdminTab('menu');
+                    document.getElementById('admin-password').value = '';
+                }, 500); // small delay to see success
+            } else {
+                alert('Sandi salah!');
+            }
+        } catch(e) {
+            console.error(e);
+            alert('Terjadi kesalahan saat login.');
+        }
+    },
+
+    logoutAdmin() {
+        this.adminToken = null;
+        this.showView('landing');
+    },
+
+    switchAdminTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(el => {
+            el.classList.remove('active');
+            el.style.borderBottom = '3px solid transparent';
+            el.style.color = '#666';
+        });
+        document.querySelectorAll('.admin-content').forEach(el => el.classList.add('hidden'));
+        
+        const activeTab = document.getElementById(`tab-${tab}`);
+        activeTab.classList.add('active');
+        activeTab.style.borderBottom = '3px solid var(--primary)';
+        activeTab.style.color = 'var(--primary)';
+        
+        document.getElementById(`admin-content-${tab}`).classList.remove('hidden');
+
+        if(tab === 'menu') {
+            this.loadAdminMenu();
+        } else if (tab === 'stats') {
+            this.loadAdminStats();
+        }
+    },
+
+    async loadAdminMenu() {
+        try {
+            const res = await fetch('/api/admin/menu');
+            const data = await res.json();
+            const tbody = document.getElementById('admin-menu-table-body');
+            tbody.innerHTML = data.map(item => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 1rem;">${item.name}</td>
+                    <td style="padding: 1rem;">${item.category}</td>
+                    <td style="padding: 1rem;">${this.formatMoney(item.price)}</td>
+                    <td style="padding: 1rem;">${item.is_active ? '<span style="color:green;font-weight:bold;">Aktif</span>' : '<span style="color:red;">Disembunyikan</span>'}</td>
+                    <td style="padding: 1rem; text-align: right;">
+                        <button onclick='app.editMenu(${JSON.stringify(item).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch(e) {
+            console.error(e);
+        }
+    },
+
+    async loadAdminStats() {
+        const period = document.getElementById('stats-period').value;
+        try {
+            const res = await fetch(`/api/admin/stats?period=${period}`);
+            const data = await res.json();
+            
+            document.getElementById('stats-revenue').innerText = this.formatMoney(data.total_revenue);
+            document.getElementById('stats-items-sold').innerText = data.total_items_sold;
+            
+            const topItemsContainer = document.getElementById('stats-top-items');
+            if(data.top_items.length === 0) {
+                topItemsContainer.innerHTML = '<p style="color:#666;text-align:center;">Belum ada data penjualan.</p>';
+            } else {
+                topItemsContainer.innerHTML = data.top_items.map((item, idx) => `
+                    <div style="display:flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                        <div>
+                            <span style="font-weight:bold; color: #333; margin-right: 0.5rem;">#${idx+1}</span>
+                            <span>${item.name} <small style="color:#888;">(${item.category})</small></span>
+                        </div>
+                        <span style="font-weight:bold; color:var(--primary);">${item.sold} terjual</span>
+                    </div>
+                `).join('');
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    },
+
+    showAddMenuModal() {
+        document.getElementById('menu-form-title').innerText = 'Tambah Menu';
+        document.getElementById('menu-form-id').value = '';
+        document.getElementById('menu-form-name').value = '';
+        document.getElementById('menu-form-category').value = 'Makanan';
+        document.getElementById('menu-form-price').value = '';
+        document.getElementById('menu-form-desc').value = '';
+        document.getElementById('menu-form-active').checked = true;
+        document.getElementById('menu-form-modal').style.display = 'flex';
+    },
+
+    editMenu(item) {
+        document.getElementById('menu-form-title').innerText = 'Edit Menu';
+        document.getElementById('menu-form-id').value = item.id;
+        document.getElementById('menu-form-name').value = item.name;
+        document.getElementById('menu-form-category').value = item.category;
+        document.getElementById('menu-form-price').value = item.price;
+        document.getElementById('menu-form-desc').value = item.description || '';
+        document.getElementById('menu-form-active').checked = item.is_active;
+        document.getElementById('menu-form-modal').style.display = 'flex';
+    },
+
+    async saveMenu() {
+        const id = document.getElementById('menu-form-id').value;
+        const payload = {
+            name: document.getElementById('menu-form-name').value,
+            category: document.getElementById('menu-form-category').value,
+            price: parseFloat(document.getElementById('menu-form-price').value),
+            description: document.getElementById('menu-form-desc').value,
+            is_active: document.getElementById('menu-form-active').checked
+        };
+
+        const url = id ? `/api/admin/menu/${id}` : `/api/admin/menu`;
+        const method = id ? 'PUT' : 'POST';
+
+        try {
+            const res = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if(res.ok) {
+                document.getElementById('menu-form-modal').style.display = 'none';
+                this.loadAdminMenu();
+                fetchMenu(); // Refresh public menu
+            } else {
+                alert('Gagal menyimpan menu');
+            }
+        } catch(e) {
+            console.error(e);
+            alert('Terjadi kesalahan');
+        }
     }
 };
 

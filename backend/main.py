@@ -40,87 +40,55 @@ class Order(BaseModel):
     payment_method: str
     notes: str = ""
 
-# Mock Data (Fallback)
-MOCK_MENU = [
-    {"id": 1, "name": "Seblak Prasmanan", "category": "Makanan", "price": 10000, "image": "https://images.unsplash.com/photo-1596649283733-1256956795f7?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 2, "favorite": True, "desc": "Seblak dengan topping prasmanan pilihan (mulai 1K)"},
-    {"id": 2, "name": "Nasi Penyet Tahu Tempe", "category": "Makanan", "price": 7000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 1, "favorite": False, "desc": "Nasi penyet dengan tahu dan tempe goreng"},
-    {"id": 3, "name": "Nasi Penyet Telur", "category": "Makanan", "price": 9000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 1, "favorite": False, "desc": "Nasi penyet dengan telur dadar/ceplok"},
-    {"id": 4, "name": "Nasi Penyet 3T (Tahu, Tempe, Telur)", "category": "Makanan", "price": 12000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 2, "favorite": True, "desc": "Nasi penyet komplit tahu, tempe, dan telur"},
-    {"id": 5, "name": "Nasi Penyet Ayam", "category": "Makanan", "price": 12000, "image": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 2, "favorite": True, "desc": "Nasi penyet dengan ayam goreng gurih"},
-    {"id": 6, "name": "Nasi Penyet Lele", "category": "Makanan", "price": 12000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 2, "favorite": False, "desc": "Nasi penyet dengan lele goreng garing"},
-    {"id": 7, "name": "Mie Goreng", "category": "Makanan", "price": 10000, "image": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Indomie goreng nikmat"},
-    {"id": 8, "name": "Mie Kuah", "category": "Makanan", "price": 10000, "image": "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Indomie kuah hangat"},
-    {"id": 9, "name": "Pop Mie", "category": "Makanan", "price": 8000, "image": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Mie cup praktis"},
-    {"id": 10, "name": "Lontong Sambel Tahu", "category": "Makanan", "price": 10000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": "spicy", "spiceLevel": 2, "favorite": False, "desc": "Lontong dengan tahu dan sambal pedas"},
-    {"id": 11, "name": "Frozen Food", "category": "Snack", "price": 10000, "image": "https://images.unsplash.com/photo-1528736235302-52922df5c122?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Aneka sosis, nugget goreng"},
-    {"id": 12, "name": "Gorengan", "category": "Snack", "price": 1000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Aneka gorengan hangat"},
-    {"id": 13, "name": "Kentang Goreng", "category": "Snack", "price": 8000, "image": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": True, "desc": "Kentang goreng renyah"},
-    {"id": 14, "name": "Cireng / Sempolan", "category": "Snack", "price": 2000, "image": "https://images.unsplash.com/photo-1626202159047-9759d57a26f3?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Camilan cireng atau sempolan"},
-    {"id": 15, "name": "Es Kelapa Muda", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1600718374662-0483d2b9da44?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": True, "desc": "Es kelapa muda segar"},
-    {"id": 16, "name": "Es Teh Jumbo", "category": "Minuman", "price": 4000, "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": True, "desc": "Es teh manis porsi jumbo"},
-    {"id": 17, "name": "Es Teh Biasa (18 Oz)", "category": "Minuman", "price": 3000, "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Es teh manis ukuran reguler"},
-    {"id": 18, "name": "Kelapa Muda Utuh + Gula", "category": "Minuman", "price": 10000, "image": "https://images.unsplash.com/photo-1600718374662-0483d2b9da44?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Kelapa muda segar disajikan utuh dengan gula"},
-    {"id": 19, "name": "Kelapa Muda Utuh + Sirup", "category": "Minuman", "price": 12000, "image": "https://images.unsplash.com/photo-1600718374662-0483d2b9da44?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Kelapa muda segar disajikan utuh dengan sirup"},
-    {"id": 20, "name": "Es Buah", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1519996521430-02b798c1d881?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": True, "desc": "Es buah segar pelepas dahaga"},
-    {"id": 21, "name": "Es Teh Leci", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Es teh dengan perisa leci segar"},
-    {"id": 22, "name": "Es Teh Lemon", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Es teh dengan perasan lemon"},
-    {"id": 23, "name": "Es Milk Tea", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Teh susu nikmat"},
-    {"id": 24, "name": "Es Good Day", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Kopi Good Day dingin"},
-    {"id": 25, "name": "Es Cappucino", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Cappucino dingin"},
-    {"id": 26, "name": "Es Milo", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": True, "desc": "Susu coklat Milo dingin"},
-    {"id": 27, "name": "Pop Ice", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1572490122747-3968b75bf699?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Minuman blender rasa buah/susu"},
-    {"id": 28, "name": "Es Hilo", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Susu Hilo dingin"},
-    {"id": 29, "name": "Kopi Susu", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Kopi dicampur susu"},
-    {"id": 30, "name": "White Coffee", "category": "Minuman", "price": 5000, "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Kopi instan Luwak White Koffie"},
-    {"id": 31, "name": "Extra Joss", "category": "Minuman", "price": 3000, "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Minuman berenergi"},
-    {"id": 32, "name": "Extra Joss Susu", "category": "Minuman", "price": 6000, "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": True, "desc": "Minuman berenergi campur susu"},
-    {"id": 33, "name": "Kopi Hitam", "category": "Minuman", "price": 4000, "image": "https://images.unsplash.com/photo-1550186981-d102bc0f7190?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Kopi hitam panas/dingin"},
-    {"id": 34, "name": "Jahe", "category": "Minuman", "price": 4000, "image": "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=400&h=300&fit=crop", "badge": None, "spiceLevel": 0, "favorite": False, "desc": "Minuman jahe hangat"},
-    {"id": 35, "name": "Nutrisari", "category": "Minuman", "price": 4000, "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop", "badge": "ice", "spiceLevel": 0, "favorite": False, "desc": "Minuman segar rasa jeruk/buah lainnya"}
-]
+class AdminLogin(BaseModel):
+    password: str
+
+class MenuItemCreate(BaseModel):
+    name: str
+    category: str
+    price: float
+    description: str = ""
+    is_active: bool = True
 
 @app.get("/api/menu")
 def get_menu():
-    if supabase:
-        try:
-            response = supabase.table("menu_items").select("*").execute()
-            return response.data
-        except Exception as e:
-            print(f"Supabase error: {e}")
-            # Fallback to mock data if table doesn't exist or error
-            return MOCK_MENU
-    return MOCK_MENU
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    try:
+        response = supabase.table("menu_items").select("*").eq("is_active", True).execute()
+        return response.data
+    except Exception as e:
+        print(f"Supabase error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/api/orders")
 def create_order(order: Order):
-    new_order_id = 999
-    is_mock = True
-    
-    if supabase:
-        try:
-            # Insert Order
-            order_data = {
-                "total_amount": order.total_amount,
-                "payment_method": order.payment_method,
-                "notes": order.notes,
-                "status": "pending"
-            }
-            order_res = supabase.table("orders").insert(order_data).execute()
-            new_order_id = order_res.data[0]['id']
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+        
+    try:
+        # Insert Order
+        order_data = {
+            "total_amount": order.total_amount,
+            "payment_method": order.payment_method,
+            "notes": order.notes,
+            "status": "pending"
+        }
+        order_res = supabase.table("orders").insert(order_data).execute()
+        new_order_id = order_res.data[0]['id']
+        
+        # Insert Items
+        for item in order.items:
+            supabase.table("order_items").insert({
+                "order_id": new_order_id,
+                "menu_item_id": item.menu_item_id,
+                "quantity": item.quantity
+            }).execute()
             
-            # Insert Items
-            for item in order.items:
-                supabase.table("order_items").insert({
-                    "order_id": new_order_id,
-                    "menu_item_id": item.menu_item_id,
-                    "quantity": item.quantity
-                }).execute()
-            
-            is_mock = False
-        except Exception as e:
-            print(f"Supabase error: {e}")
-            # Fallback to mock ID if insertion fails
-            new_order_id = 999
+    except Exception as e:
+        print(f"Supabase error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create order in database")
     
     # Integrasi Midtrans Snap jika pembayaran menggunakan QRIS
     snap_token = None
@@ -145,9 +113,6 @@ def create_order(order: Order):
         "order_id": new_order_id,
         "snap_token": snap_token
     }
-    
-    if is_mock:
-        response["warning"] = "Saved to mock (Supabase error or not configured)"
         
     return response
 
@@ -175,6 +140,104 @@ async def midtrans_webhook(request: Request):
     except Exception as e:
         print(f"Webhook error: {e}")
         raise HTTPException(status_code=500, detail="Webhook processing failed")
+
+@app.post("/api/admin/login")
+def admin_login(data: AdminLogin):
+    if data.password == "ayucitradewi":
+        return {"success": True, "token": "admin-token-123"}
+    raise HTTPException(status_code=401, detail="Sandi salah")
+
+@app.get("/api/admin/menu")
+def get_admin_menu():
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    res = supabase.table("menu_items").select("*").execute()
+    return res.data
+
+@app.post("/api/admin/menu")
+def create_admin_menu(item: MenuItemCreate):
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    data = item.dict()
+    res = supabase.table("menu_items").insert(data).execute()
+    return {"success": True, "data": res.data[0]}
+
+@app.put("/api/admin/menu/{item_id}")
+def update_admin_menu(item_id: int, item: MenuItemCreate):
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    data = item.dict()
+    res = supabase.table("menu_items").update(data).eq("id", item_id).execute()
+    return {"success": True, "data": res.data[0]}
+
+from datetime import datetime, timedelta, timezone
+
+@app.get("/api/admin/stats")
+def get_admin_stats(period: str = "all"):
+    # period could be: daily, weekly, monthly, all
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    
+    # We fetch all orders for simplicity in this mock, then filter in python
+    orders_res = supabase.table("orders").select("*").execute()
+    order_items_res = supabase.table("order_items").select("*, menu_items(*)").execute()
+    
+    orders = orders_res.data
+    order_items = order_items_res.data
+    
+    now = datetime.now(timezone.utc)
+    filtered_orders = []
+    for o in orders:
+        if o["status"] not in ["paid", "pending"]:
+            continue
+            
+        if period == "daily":
+            # Check if created_at is today
+            created_at = datetime.fromisoformat(o["created_at"].replace('Z', '+00:00'))
+            if (now - created_at).days == 0 and now.day == created_at.day:
+                filtered_orders.append(o)
+        elif period == "weekly":
+            # Check if within last 7 days
+            created_at = datetime.fromisoformat(o["created_at"].replace('Z', '+00:00'))
+            if (now - created_at).days <= 7:
+                filtered_orders.append(o)
+        elif period == "monthly":
+            # Check if within this month
+            created_at = datetime.fromisoformat(o["created_at"].replace('Z', '+00:00'))
+            if now.year == created_at.year and now.month == created_at.month:
+                filtered_orders.append(o)
+        else:
+            filtered_orders.append(o)
+            
+    filtered_order_ids = {o["id"] for o in filtered_orders}
+    
+    # Calculate stats
+    total_revenue = sum(float(o["total_amount"]) for o in filtered_orders)
+    
+    # Filter order items that belong to the filtered orders
+    filtered_order_items = [oi for oi in order_items if oi["order_id"] in filtered_order_ids]
+    
+    items_sold_count = sum(oi["quantity"] for oi in filtered_order_items)
+    
+    # Top items by category
+    sales_by_item = {}
+    for oi in filtered_order_items:
+        if not oi.get("menu_items"): continue
+        cat = oi["menu_items"]["category"]
+        name = oi["menu_items"]["name"]
+        key = f"{cat}::{name}"
+        if key not in sales_by_item:
+            sales_by_item[key] = 0
+        sales_by_item[key] += oi["quantity"]
+        
+    top_items = [{"category": k.split("::")[0], "name": k.split("::")[1], "sold": v} for k, v in sales_by_item.items()]
+    top_items.sort(key=lambda x: x["sold"], reverse=True)
+    
+    return {
+        "total_revenue": total_revenue,
+        "total_items_sold": items_sold_count,
+        "top_items": top_items[:10]
+    }
 
 # Mount static frontend files
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
