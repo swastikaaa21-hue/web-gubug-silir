@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gubug Silir - Makanan Enak, Pengiriman Cepat</title>
+    <title>Gubug Silir - Makanan Enak, Tanpa Antri</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,7 @@
                     </h1>
                     
                     <p class="hero-desc">
-                        Pesan sekarang dan biarkan kami mengurus persiapan makanan sementara Anda menikmati perayaan bersama orang tercinta. Makanan enak, diantar cepat ke pintu Anda.
+                        Pesan sekarang dan biarkan kami mengurus persiapan makanan sementara Anda menikmati perayaan bersama orang tercinta. Pesan dari rumah, ambil di tempat tanpa perlu antri panjang.
                     </p>
                     
                     <div class="hero-buttons">
@@ -75,10 +75,10 @@
                     
                     <div class="features-strip">
                         <div class="feature-item">
-                            <div class="feature-icon bg-orange"><i data-lucide="truck"></i></div>
+                            <div class="feature-icon bg-orange"><i data-lucide="store"></i></div>
                             <div>
-                                <h4>Pengiriman Cepat</h4>
-                                <p>Tepat waktu, setiap saat</p>
+                                <h4>Ambil di Tempat</h4>
+                                <p>Tanpa antri, pesanan langsung siap</p>
                             </div>
                         </div>
                         <div class="feature-item">
@@ -117,14 +117,14 @@
                         <div class="step-number bg-green">2</div>
                         <div class="step-icon bg-green-light"><i data-lucide="clock"></i></div>
                         <h3>Buat Pesanan</h3>
-                        <p>Sesuaikan pesanan Anda, pilih tanggal pengiriman, dan bayar dengan aman secara online.</p>
+                        <p>Sesuaikan pesanan Anda, konfirmasi pesanan, dan selesaikan pembayaran untuk diproses.</p>
                     </div>
                     
                     <div class="step-card animate-on-scroll stagger-3">
                         <div class="step-number bg-orange-alt">3</div>
-                        <div class="step-icon bg-orange-alt-light"><i data-lucide="truck"></i></div>
-                        <h3>Kami Antar!</h3>
-                        <p>Duduk dan bersantailah — makanan segar Anda akan diantar langsung ke depan pintu Anda.</p>
+                        <div class="step-icon bg-orange-alt-light"><i data-lucide="store"></i></div>
+                        <h3>Ambil Pesanan</h3>
+                        <p>Datang ke Gubug Silir, tunjukkan pesanan Anda, dan langsung bawa pulang tanpa perlu antri.</p>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                         <i data-lucide="timer" stroke-width="1.5"></i>
                     </div>
                     <h3 class="footer-top-title">Kami Pastikan</h3>
-                    <h2 class="footer-top-subtitle">Pesanan Anda diantar tepat waktu</h2>
+                    <h2 class="footer-top-subtitle">Pesanan Anda disiapkan tepat waktu</h2>
                     <p class="footer-top-desc">Jika Anda sedang rapat, lembur, dan butuh semangat tambahan.<br>Beri tahu kami dan kami siap membantu</p>
                     <div class="footer-top-actions">
                         <button class="btn btn-red" onclick="app.showView('menu')">Pesan Sekarang</button>
@@ -170,7 +170,7 @@
                         <div class="footer-col-center">
                             <div class="delivery-badge">
                                 <span class="badge-text-small">GubugSilir</span>
-                                <span class="badge-text-medium">Delivery</span>
+                                <span class="badge-text-medium">Pick-Up</span>
                                 <span class="badge-text-large">1-500-505</span>
                                 <span class="badge-text-tiny">gubugsilir.id</span>
                             </div>
@@ -290,6 +290,14 @@
                             <div id="qris-container" class="qris-container mt-4" style="display: none;">
                                 <p style="text-align: center; margin-bottom: 10px; font-weight: 500;">Silakan scan QRIS di bawah ini:</p>
                                 <img src="/static/qris.jpeg" alt="QRIS" style="max-width: 250px; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">*Setelah membayar, pesanan akan disiapkan. Anda akan dikabari untuk mengambil pesanan tanpa antri.</p>
+                            </div>
+                            <div id="cash-container" class="cash-container mt-4" style="display: none;">
+                                <div style="background-color: var(--primary-light); padding: 15px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--primary);">
+                                    <i data-lucide="info" style="color: var(--primary); margin-bottom: 10px;"></i>
+                                    <p style="font-weight: 500; margin-bottom: 5px;">Pembayaran Tunai</p>
+                                    <p style="font-size: 0.9rem; color: var(--text-muted);">Silakan datang ke Gubug Silir untuk melakukan pembayaran di kasir dan mengambil pesanan Anda.</p>
+                                </div>
                             </div>
                         </div>
                         
@@ -319,7 +327,7 @@
             <div class="receipt-card">
                 <div class="receipt-icon"><i data-lucide="check-circle"></i></div>
                 <h2>Pesanan Berhasil!</h2>
-                <p>Pesanan Anda telah diterima dan sedang diproses.</p>
+                <p>Pesanan Anda telah diterima dan sedang diproses. Kami akan memberitahu Anda saat pesanan siap diambil.</p>
                 
                 <div class="receipt-details">
                     <div class="receipt-row">

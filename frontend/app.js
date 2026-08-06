@@ -299,11 +299,21 @@ const app = {
         this.renderPaymentMethods();
         
         const qrisContainer = document.getElementById('qris-container');
+        const cashContainer = document.getElementById('cash-container');
+        
         if (qrisContainer) {
             if (id === 'qris') {
                 qrisContainer.style.display = 'block';
             } else {
                 qrisContainer.style.display = 'none';
+            }
+        }
+        
+        if (cashContainer) {
+            if (id === 'cash') {
+                cashContainer.style.display = 'block';
+            } else {
+                cashContainer.style.display = 'none';
             }
         }
     },
