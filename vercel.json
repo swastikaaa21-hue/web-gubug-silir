@@ -8,6 +8,10 @@
     {
       "src": "frontend/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "asset/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -18,6 +22,10 @@
     {
       "src": "/static/(.*)",
       "dest": "/frontend/$1"
+    },
+    {
+      "src": "/asset/(.*)",
+      "dest": "/asset/$1"
     },
     {
       "src": "/(.*)",

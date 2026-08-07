@@ -169,7 +169,7 @@ const app = {
             return `
                 <div class="menu-card">
                     <div class="menu-img-wrap">
-                        <img src="${item.image}" alt="${item.name}" class="menu-img">
+                        <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" class="menu-img">
                         ${badgeHtml}
                         ${item.favorite || item.is_favorite ? `<button class="fav-btn"><i data-lucide="heart" fill="currentColor"></i></button>` : ''}
                     </div>
@@ -239,7 +239,7 @@ const app = {
 
         container.innerHTML = state.cart.map(item => `
             <div class="cart-item">
-                <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" class="cart-item-img">
                 <div class="cart-item-info">
                     <div class="cart-item-title">${item.name}</div>
                     <div class="cart-item-price">${this.formatMoney(item.price)}</div>
