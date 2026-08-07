@@ -15,17 +15,17 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 IMAGE_MAPPING = {
-    "Es Kelapa Muda": "/asset/Es%20Kelapa%20Muda.jpg",
-    "Frozen Food": "/asset/Frozen%20Food.png",
-    "Kentang Goreng": "/asset/Kentang%20Goreng.png",
-    "Lontong Sambel Tahu": "/asset/Lontong%20Tahu%20Sambel.png",
-    "Mie Goreng": "/asset/Mie%20Goreng.png",
-    "Mie Kuah": "/asset/Mie%20Kuah.png",
-    "Nasi Penyet Ayam": "/asset/Nasi%20Penyet%20Ayam.png",
-    "Nasi Penyet Tahu Tempe": "/asset/Nasi%20Penyet%20Tahu%20Tempe.png",
-    "Nasi Penyet 3T (Tahu, Tempe, Telur)": "/asset/Nasi%20Penyet%20Telur%20Tahu%20Tempe.png",
-    "Nasi Penyet Telur": "/asset/Nasi%20Penyet%20Telur.png",
-    "Pop Mie": "/asset/Pop%20Mie.png",
+    "Es Kelapa Muda": "/asset/Es Kelapa Muda.jpg",
+    "Frozen Food": "/asset/Frozen Food.png",
+    "Kentang Goreng": "/asset/Kentang Goreng.png",
+    "Lontong Sambel Tahu": "/asset/Lontong Tahu Sambel.png",
+    "Mie Goreng": "/asset/Mie Goreng.png",
+    "Mie Kuah": "/asset/Mie Kuah.png",
+    "Nasi Penyet Ayam": "/asset/Nasi Penyet Ayam.png",
+    "Nasi Penyet Tahu Tempe": "/asset/Nasi Penyet Tahu Tempe.png",
+    "Nasi Penyet 3T (Tahu, Tempe, Telur)": "/asset/Nasi Penyet Telur Tahu Tempe.png",
+    "Nasi Penyet Telur": "/asset/Nasi Penyet Telur.png",
+    "Pop Mie": "/asset/Pop Mie.png",
 }
 
 def run():
