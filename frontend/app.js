@@ -394,13 +394,17 @@ const app = {
     },
 
     downloadReceiptPDF() {
+        // Gulir ke atas untuk mencegah bug html2canvas memotong elemen
+        window.scrollTo(0, 0);
+        
         const element = document.getElementById('receipt-print-area');
         const opt = {
-            margin:       0.5,
+            margin:       [4, 3, 3, 3], // [top, right, bottom, left] or [top, left, bottom, right] dalam mm
             filename:     `Invoice_${document.getElementById('receipt-order-id').innerText}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'in', format: 'a5', orientation: 'portrait' }
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: 'avoid-all' }
         };
         html2pdf().set(opt).from(element).save();
     },
