@@ -280,6 +280,23 @@ const app = {
         this.renderCheckoutSummary();
     },
 
+    renderCheckoutSummary() {
+        const container = document.getElementById('checkout-summary-items');
+        
+        container.innerHTML = state.cart.map(item => `
+            <div class="summary-item">
+                <div>
+                    <span class="qty">${item.qty}x</span>
+                    <span>${item.name}</span>
+                </div>
+                <span>${this.formatMoney(item.price * item.qty)}</span>
+            </div>
+        `).join('');
+
+        const total = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        document.getElementById('checkout-total-price').innerText = this.formatMoney(total);
+    },
+
     renderPaymentMethods() {
         const container = document.getElementById('payment-methods');
         if(!container) return;
@@ -309,45 +326,11 @@ const app = {
         }
     },
 
-    sendWAProof() {
+    async submitAndSendWA() {
         if (state.cart.length === 0) {
             alert("Keranjang Anda kosong!");
             return;
         }
-
-        let message = "Hallo kak, aku pesan\n";
-        state.cart.forEach(item => {
-            message += `- ${item.qty}x ${item.name} (${this.formatMoney(item.price * item.qty)})\n`;
-        });
-
-        const notes = document.getElementById('order-notes').value;
-        if (notes && notes.trim() !== '') {
-            message += `\nCatatan: ${notes.trim()}`;
-        }
-
-        const encodedMessage = encodeURIComponent(message);
-        const waUrl = `https://wa.me/62895414999978?text=${encodedMessage}`;
-        window.open(waUrl, '_blank');
-    },
-
-    renderCheckoutSummary() {
-        const container = document.getElementById('checkout-summary-items');
-        
-        container.innerHTML = state.cart.map(item => `
-            <div class="summary-item">
-                <div>
-                    <span class="qty">${item.qty}x</span>
-                    <span>${item.name}</span>
-                </div>
-                <span>${this.formatMoney(item.price * item.qty)}</span>
-            </div>
-        `).join('');
-
-        const total = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        document.getElementById('checkout-total-price').innerText = this.formatMoney(total);
-    },
-
-    async processCheckout() {
         if (!state.selectedPayment) {
             alert("Mohon pilih metode pembayaran.");
             return;
@@ -356,6 +339,7 @@ const app = {
         const total = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         const notes = document.getElementById('order-notes').value;
 
+        // Siapkan data pesanan untuk backend
         const orderData = {
             total_amount: total,
             payment_method: state.selectedPayment,
@@ -366,41 +350,59 @@ const app = {
             }))
         };
 
-        // Call API
+        // Simpan pesanan ke database
         const result = await submitOrder(orderData);
         
-        if (result.success) {
-            const showReceipt = () => {
-                document.getElementById('receipt-order-id').innerText = `#ORD-${result.order_id}`;
-                document.getElementById('receipt-total').innerText = this.formatMoney(total);
-                document.getElementById('receipt-payment').innerText = state.paymentMethods.find(p => p.id === state.selectedPayment).name;
-                this.showView('receipt');
-            };
-
-            if (result.snap_token) {
-                // Trigger Midtrans Snap
-                window.snap.pay(result.snap_token, {
-                    onSuccess: function(result){
-                        showReceipt();
-                    },
-                    onPending: function(result){
-                        alert("Menunggu pembayaran...");
-                        showReceipt();
-                    },
-                    onError: function(result){
-                        alert("Pembayaran gagal!");
-                    },
-                    onClose: function(){
-                        alert('Anda menutup pop-up tanpa menyelesaikan pembayaran');
-                    }
-                });
-            } else {
-                // Untuk Tunai atau jika token tidak ada
-                showReceipt();
-            }
-        } else {
+        if (!result.success) {
             alert("Pesanan gagal diproses. Silakan coba lagi.");
+            return;
         }
+
+        // Siapkan pesan WhatsApp
+        let message = "Hallo kak, aku pesan\n";
+        state.cart.forEach(item => {
+            message += `- ${item.qty}x ${item.name} (${this.formatMoney(item.price * item.qty)})\n`;
+        });
+        if (notes && notes.trim() !== '') {
+            message += `\nCatatan: ${notes.trim()}`;
+        }
+        const encodedMessage = encodeURIComponent(message);
+        const waUrl = `https://wa.me/62895414999978?text=${encodedMessage}`;
+
+        // Isi data struk
+        document.getElementById('receipt-order-id').innerText = `#ORD-${result.order_id}`;
+        document.getElementById('receipt-payment').innerText = state.paymentMethods.find(p => p.id === state.selectedPayment)?.name || 'Tunai';
+        
+        const now = new Date();
+        document.getElementById('receipt-date').innerText = now.toLocaleDateString('id-ID');
+        document.getElementById('receipt-time').innerText = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+        const tbody = document.getElementById('receipt-table-body');
+        tbody.innerHTML = state.cart.map(item => `
+            <tr style="border-bottom: 1px dashed #eee;">
+                <td style="padding: 12px 8px; color: #333;">${item.name}</td>
+                <td style="padding: 12px 8px; text-align: center; color: #333;">${item.qty}</td>
+                <td style="padding: 12px 8px; text-align: right; color: #333;">${this.formatMoney(item.price)}</td>
+                <td style="padding: 12px 8px; text-align: right; color: #333; font-weight: 500;">${this.formatMoney(item.price * item.qty)}</td>
+            </tr>
+        `).join('');
+        document.getElementById('receipt-total').innerText = this.formatMoney(total);
+
+        // Pindah ke halaman struk dan buka WA
+        this.showView('receipt');
+        window.open(waUrl, '_blank');
+    },
+
+    downloadReceiptPDF() {
+        const element = document.getElementById('receipt-print-area');
+        const opt = {
+            margin:       0.5,
+            filename:     `Invoice_${document.getElementById('receipt-order-id').innerText}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'a5', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
     },
 
     clearCart() {

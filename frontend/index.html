@@ -19,9 +19,12 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/style.css">
 
-    <!-- Midtrans Snap -->
+    <!-- Midtrans Snap (Not used anymore, but kept for reference) -->
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="SB-Mid-client-XXXXXXXX"></script>
+        
+    <!-- html2pdf.js for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
@@ -289,17 +292,7 @@
                                     style="max-width: 250px; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                                 <p
                                     style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">
-                                    Setelah membayar, silahkan kirim bukti pembayaran ke Whatsapp kami dibawah. Anda
-                                    akan dikabari untuk mengambil pesanan tanpa antri.</p>
-                                <button class="btn btn-block mt-4" onclick="app.sendWAProof()"
-                                    style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #25D366; color: white; border: none; padding: 12px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="currentColor">
-                                        <path
-                                            d="M12.01 2.01c-5.52 0-9.99 4.47-9.99 9.99 0 1.95.55 3.77 1.5 5.31L2 22l4.82-1.52c1.47.88 3.19 1.41 5.19 1.41 5.52 0 9.99-4.47 9.99-9.99S17.53 2.01 12.01 2.01zM17.13 15.3c-.24.68-1.4 1.25-1.93 1.34-.51.09-1.18.25-3.34-.63-2.61-1.07-4.29-3.75-4.42-3.92-.13-.18-1.06-1.41-1.06-2.68 0-1.28.66-1.92.89-2.18.24-.26.51-.32.68-.32.18 0 .35 0 .5.01.17.01.4-.07.61.45.23.54.74 1.81.8 1.96.07.15.11.33.02.5-.09.18-.13.3-.26.45-.13.15-.28.32-.39.43-.13.11-.26.24-.11.5.15.26.66 1.1 1.41 1.76.96.86 1.79 1.12 2.05 1.25.26.13.41.11.56-.06.15-.18.66-.77.84-1.04.18-.26.35-.22.59-.13.24.09 1.54.72 1.8 1.85.85.13.15.22.24.26.37.05.13.01.37-.23 1.05z" />
-                                    </svg>
-                                    Kirim Bukti Pembayaran ke WA
-                                </button>
+                                    Scan QRIS di atas untuk membayar, lalu lanjutkan kirim bukti ke WhatsApp.</p>
                             </div>
                         </div>
 
@@ -319,8 +312,15 @@
                             <span>Total Pembayaran</span>
                             <span id="checkout-total-price">Rp 0</span>
                         </div>
-                        <button class="btn btn-primary btn-block mt-4" onclick="app.processCheckout()">Buat
-                            Pesanan</button>
+                        <button class="btn btn-block mt-4" onclick="app.submitAndSendWA()"
+                            style="display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #25D366; color: white; border: none; padding: 12px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M12.01 2.01c-5.52 0-9.99 4.47-9.99 9.99 0 1.95.55 3.77 1.5 5.31L2 22l4.82-1.52c1.47.88 3.19 1.41 5.19 1.41 5.52 0 9.99-4.47 9.99-9.99S17.53 2.01 12.01 2.01zM17.13 15.3c-.24.68-1.4 1.25-1.93 1.34-.51.09-1.18.25-3.34-.63-2.61-1.07-4.29-3.75-4.42-3.92-.13-.18-1.06-1.41-1.06-2.68 0-1.28.66-1.92.89-2.18.24-.26.51-.32.68-.32.18 0 .35 0 .5.01.17.01.4-.07.61.45.23.54.74 1.81.8 1.96.07.15.11.33.02.5-.09.18-.13.3-.26.45-.13.15-.28.32-.39.43-.13.11-.26.24-.11.5.15.26.66 1.1 1.41 1.76.96.86 1.79 1.12 2.05 1.25.26.13.41.11.56-.06.15-.18.66-.77.84-1.04.18-.26.35-.22.59-.13.24.09 1.54.72 1.8 1.85.85.13.15.22.24.26.37.05.13.01.37-.23 1.05z" />
+                            </svg>
+                            Kirim Pesanan & Bukti ke WA
+                        </button>
                     </div>
                 </div>
             </div>
@@ -328,29 +328,63 @@
 
         <!-- ==================== RECEIPT VIEW ==================== -->
         <section id="view-receipt" class="view hidden">
-            <div class="receipt-card">
-                <div class="receipt-icon"><i data-lucide="check-circle"></i></div>
-                <h2>Pesanan Berhasil!</h2>
-                <p>Pesanan Anda telah diterima dan sedang diproses. Kami akan memberitahu Anda saat pesanan siap
-                    diambil.</p>
+            <div style="max-width: 800px; margin: 3rem auto; padding: 0 1.5rem;">
+                <!-- Kotak Struk yang akan di-export ke PDF -->
+                <div id="receipt-print-area" class="receipt-card" style="margin: 0; padding: 2.5rem; text-align: left; position: relative;">
+                    <!-- Logo / Brand di Struk -->
+                    <div style="text-align: center; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
+                        <h1 style="font-size: 1.8rem; color: var(--primary); font-family: var(--font-heading); margin-bottom: 0.5rem;">Gubug<span style="color: var(--secondary)">Silir</span></h1>
+                        <p style="color: #666; font-size: 0.9rem;">Makanan Enak, Tanpa Antri</p>
+                    </div>
 
-                <div class="receipt-details">
-                    <div class="receipt-row">
-                        <span>ID Pesanan:</span>
-                        <span id="receipt-order-id" class="font-bold">#ORD-123</span>
+                    <h2 style="text-align: center; margin-bottom: 1.5rem; color: #333;">INVOICE PESANAN</h2>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; font-size: 0.95rem;">
+                        <div>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #555;">ID Pesanan:</strong> <span id="receipt-order-id">#ORD-123</span></p>
+                            <p><strong style="color: #555;">Metode Bayar:</strong> <span id="receipt-payment">Tunai</span></p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #555;">Tanggal:</strong> <span id="receipt-date">-</span></p>
+                            <p><strong style="color: #555;">Waktu:</strong> <span id="receipt-time">-</span></p>
+                        </div>
                     </div>
-                    <div class="receipt-row">
-                        <span>Total Bayar:</span>
-                        <span id="receipt-total" class="font-bold">Rp 0</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span>Metode Pembayaran:</span>
-                        <span id="receipt-payment" class="font-bold">Tunai</span>
+
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;" class="receipt-table">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #333; background: #f9f9f9;">
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Deskripsi Item</th>
+                                <th style="padding: 12px 8px; text-align: center; font-weight: 600;">Qty</th>
+                                <th style="padding: 12px 8px; text-align: right; font-weight: 600;">Harga Satuan</th>
+                                <th style="padding: 12px 8px; text-align: right; font-weight: 600;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receipt-table-body">
+                            <!-- Item baris struk -->
+                        </tbody>
+                        <tfoot>
+                            <tr style="border-top: 2px solid #333;">
+                                <td colspan="3" style="padding: 16px 8px; text-align: right; font-weight: bold; font-size: 1.1rem;">TOTAL PEMBAYARAN</td>
+                                <td style="padding: 16px 8px; text-align: right; font-weight: bold; font-size: 1.2rem; color: var(--primary);" id="receipt-total">Rp 0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div style="text-align: center; margin-top: 3rem; color: #777; font-size: 0.85rem;">
+                        <p>Terima kasih telah memesan di Gubug Silir!</p>
+                        <p>Pesanan Anda akan segera disiapkan.</p>
                     </div>
                 </div>
 
-                <button class="btn btn-primary btn-block mt-4"
-                    onclick="app.showView('landing'); app.clearCart();">Kembali ke Beranda</button>
+                <!-- Tombol Aksi di Luar Area Print PDF -->
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button class="btn btn-secondary btn-block" style="background: #f1f5f9; color: #333; border: 1px solid #cbd5e1;"
+                        onclick="app.downloadReceiptPDF()">
+                        <i data-lucide="download"></i> Download Struk PDF
+                    </button>
+                    <button class="btn btn-primary btn-block"
+                        onclick="app.showView('landing'); app.clearCart();">Selesai & Kembali</button>
+                </div>
             </div>
         </section>
 

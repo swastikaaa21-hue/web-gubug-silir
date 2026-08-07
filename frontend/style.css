@@ -717,11 +717,7 @@ ul {
     box-shadow: var(--shadow-lg);
 }
 
-.menu-img-wrap {
-    position: relative;
-    height: 200px;
-    overflow: hidden;
-}
+.menu-img-wrap { position: relative; height: 280px; overflow: hidden; }
 
 .menu-img {
     width: 100%;
