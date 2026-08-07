@@ -241,7 +241,10 @@ def get_admin_stats(period: str = "all"):
 
 # Mount static frontend files
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+ASSET_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "asset")
+
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+app.mount("/asset", StaticFiles(directory=ASSET_DIR), name="asset")
 
 @app.get("/")
 def serve_frontend():
