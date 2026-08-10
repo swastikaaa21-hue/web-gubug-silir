@@ -22,7 +22,7 @@
     <!-- Midtrans Snap (Not used anymore, but kept for reference) -->
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="SB-Mid-client-XXXXXXXX"></script>
-        
+
     <!-- html2pdf.js for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -187,10 +187,13 @@
                         </div>
                     </div>
 
-                    <div class="copyright-text" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; position: relative;">
-                        <p style="margin: 0;">Seluruh gambar dan materi dilindungi hak cipta dan merupakan milik Gubug Silir. Dilarang
+                    <div class="copyright-text"
+                        style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; position: relative;">
+                        <p style="margin: 0;">Seluruh gambar dan materi dilindungi hak cipta dan merupakan milik Gubug
+                            Silir. Dilarang
                             keras menggunakan atau menggandakan tanpa izin tertulis.</p>
-                        <i data-lucide="lock" style="width: 14px; height: 14px; color: #ccc; cursor: pointer;" onclick="app.openAdminModal()" title="Admin Login"></i>
+                        <i data-lucide="lock" style="width: 14px; height: 14px; color: #ccc; cursor: pointer;"
+                            onclick="app.openAdminModal()" title="Admin Login"></i>
                     </div>
                 </div>
             </footer>
@@ -330,22 +333,30 @@
         <section id="view-receipt" class="view hidden">
             <div style="max-width: 800px; margin: 3rem auto; padding: 0 1.5rem;">
                 <!-- Kotak Struk yang akan di-export ke PDF -->
-                <div id="receipt-print-area" class="receipt-card" style="margin: 0; padding: 1rem 2.5rem; text-align: left; position: relative;">
+                <div id="receipt-print-area" class="receipt-card"
+                    style="margin: 0; padding: 1rem 2.5rem; text-align: left; position: relative;">
                     <!-- Logo / Brand di Struk -->
-                    <div style="text-align: center; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
-                        <h1 style="font-size: 1.8rem; color: var(--primary); font-family: var(--font-heading); margin-bottom: 0.5rem;">Gubug<span style="color: var(--secondary)">Silir</span></h1>
+                    <div
+                        style="text-align: center; margin-bottom: 2rem; border-bottom: 2px dashed #eee; padding-bottom: 1.5rem;">
+                        <h1
+                            style="font-size: 1.8rem; color: var(--primary); font-family: var(--font-heading); margin-bottom: 0.5rem;">
+                            Gubug<span style="color: var(--secondary)">Silir</span></h1>
                         <p style="color: #666; font-size: 0.9rem;">Makanan Enak, Tanpa Antri</p>
                     </div>
 
                     <h2 style="text-align: center; margin-bottom: 1.5rem; color: #333;">INVOICE PESANAN</h2>
 
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; font-size: 0.95rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; margin-bottom: 2rem; font-size: 0.95rem;">
                         <div>
-                            <p style="margin-bottom: 0.5rem;"><strong style="color: #555;">ID Pesanan:</strong> <span id="receipt-order-id">#ORD-123</span></p>
-                            <p><strong style="color: #555;">Metode Bayar:</strong> <span id="receipt-payment">Tunai</span></p>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #555;">ID Pesanan:</strong> <span
+                                    id="receipt-order-id">#ORD-123</span></p>
+                            <p><strong style="color: #555;">Metode Bayar:</strong> <span
+                                    id="receipt-payment">Tunai</span></p>
                         </div>
                         <div style="text-align: right;">
-                            <p style="margin-bottom: 0.5rem;"><strong style="color: #555;">Tanggal:</strong> <span id="receipt-date">-</span></p>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #555;">Tanggal:</strong> <span
+                                    id="receipt-date">-</span></p>
                             <p><strong style="color: #555;">Waktu:</strong> <span id="receipt-time">-</span></p>
                         </div>
                     </div>
@@ -364,8 +375,11 @@
                         </tbody>
                         <tfoot>
                             <tr style="border-top: 2px solid #333;">
-                                <td colspan="3" style="padding: 16px 8px; text-align: right; font-weight: bold; font-size: 1.1rem;">TOTAL PEMBAYARAN</td>
-                                <td style="padding: 16px 8px; text-align: right; font-weight: bold; font-size: 1.2rem; color: var(--primary);" id="receipt-total">Rp 0</td>
+                                <td colspan="3"
+                                    style="padding: 16px 8px; text-align: right; font-weight: bold; font-size: 1.1rem;">
+                                    TOTAL PEMBAYARAN</td>
+                                <td style="padding: 16px 8px; text-align: right; font-weight: bold; font-size: 1.2rem; color: var(--primary);"
+                                    id="receipt-total">Rp 0</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -378,7 +392,8 @@
 
                 <!-- Tombol Aksi di Luar Area Print PDF -->
                 <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button class="btn btn-secondary btn-block" style="background: #f1f5f9; color: #333; border: 1px solid #cbd5e1;"
+                    <button class="btn btn-secondary btn-block"
+                        style="background: #f1f5f9; color: #333; border: 1px solid #cbd5e1;"
                         onclick="app.downloadReceiptPDF()">
                         <i data-lucide="download"></i> Download Struk PDF
                     </button>
@@ -415,13 +430,20 @@
         </div>
 
         <!-- ==================== ADMIN LOGIN MODAL ==================== -->
-        <div id="admin-login-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
-            <div class="modal-content" style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative;">
-                <button onclick="app.closeAdminModal()" style="position: absolute; right: 1rem; top: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                <i data-lucide="shield-check" style="width: 48px; height: 48px; color: var(--primary); margin-bottom: 1rem;"></i>
+        <div id="admin-login-modal" class="modal-overlay"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+            <div class="modal-content"
+                style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative;">
+                <button onclick="app.closeAdminModal()"
+                    style="position: absolute; right: 1rem; top: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                <i data-lucide="shield-check"
+                    style="width: 48px; height: 48px; color: var(--primary); margin-bottom: 1rem;"></i>
                 <h3 style="margin-bottom: 0.5rem;">Akses Admin</h3>
-                <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Masukkan kata sandi untuk mengelola menu dan melihat laporan.</p>
-                <input type="password" id="admin-password" placeholder="Kata Sandi" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem; box-sizing: border-box;" onkeypress="if(event.key === 'Enter') app.loginAdmin()">
+                <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Masukkan kata sandi untuk mengelola
+                    menu dan melihat laporan.</p>
+                <input type="password" id="admin-password" placeholder="Kata Sandi"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem; box-sizing: border-box;"
+                    onkeypress="if(event.key === 'Enter') app.loginAdmin()">
                 <button class="btn btn-primary btn-block" onclick="app.loginAdmin()">Masuk</button>
             </div>
         </div>
@@ -431,21 +453,30 @@
             <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 1rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>Dashboard Admin</h2>
-                    <button class="btn" style="background: #f1f1f1; color: #333;" onclick="app.logoutAdmin()">Keluar</button>
+                    <button class="btn" style="background: #f1f1f1; color: #333;"
+                        onclick="app.logoutAdmin()">Keluar</button>
                 </div>
-                
-                <div class="admin-tabs" style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem;">
-                    <button id="tab-menu" class="admin-tab active" onclick="app.switchAdminTab('menu')" style="background: none; border: none; font-weight: bold; color: var(--primary); font-size: 1.1rem; cursor: pointer; padding: 0.5rem 1rem; border-bottom: 3px solid var(--primary);">Kelola Menu</button>
-                    <button id="tab-stats" class="admin-tab" onclick="app.switchAdminTab('stats')" style="background: none; border: none; font-weight: bold; color: #666; font-size: 1.1rem; cursor: pointer; padding: 0.5rem 1rem; border-bottom: 3px solid transparent;">Laporan Keuangan</button>
+
+                <div class="admin-tabs"
+                    style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem;">
+                    <button id="tab-menu" class="admin-tab active" onclick="app.switchAdminTab('menu')"
+                        style="background: none; border: none; font-weight: bold; color: var(--primary); font-size: 1.1rem; cursor: pointer; padding: 0.5rem 1rem; border-bottom: 3px solid var(--primary);">Kelola
+                        Menu</button>
+                    <button id="tab-stats" class="admin-tab" onclick="app.switchAdminTab('stats')"
+                        style="background: none; border: none; font-weight: bold; color: #666; font-size: 1.1rem; cursor: pointer; padding: 0.5rem 1rem; border-bottom: 3px solid transparent;">Laporan
+                        Keuangan</button>
                 </div>
 
                 <!-- Kelola Menu Tab -->
                 <div id="admin-content-menu" class="admin-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <h3>Daftar Menu</h3>
-                        <button class="btn btn-primary" onclick="app.showAddMenuModal()"><i data-lucide="plus"></i> Tambah Menu</button>
+                        <button class="btn btn-primary" onclick="app.showAddMenuModal()"><i data-lucide="plus"></i>
+                            Tambah Menu</button>
                     </div>
-                    <div style="overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <div
+                        style="overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                         <table style="width: 100%; border-collapse: collapse; text-align: left;">
                             <thead style="background: #f9f9f9; border-bottom: 2px solid #eee;">
                                 <tr>
@@ -465,29 +496,35 @@
 
                 <!-- Laporan Keuangan Tab -->
                 <div id="admin-content-stats" class="admin-content hidden">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <h3>Ringkasan Keuangan</h3>
-                        <select id="stats-period" onchange="app.loadAdminStats()" style="padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; font-family: inherit;">
+                        <select id="stats-period" onchange="app.loadAdminStats()"
+                            style="padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; font-family: inherit;">
                             <option value="daily">Hari Ini</option>
                             <option value="weekly">Minggu Ini</option>
                             <option value="monthly">Bulan Ini</option>
                             <option value="all">Semua Waktu</option>
                         </select>
                     </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center;">
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div
+                            style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center;">
                             <p style="color: #666; margin-bottom: 0.5rem; font-size: 0.9rem;">Total Pendapatan</p>
                             <h2 id="stats-revenue" style="color: var(--primary); margin: 0;">Rp 0</h2>
                         </div>
-                        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center;">
+                        <div
+                            style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center;">
                             <p style="color: #666; margin-bottom: 0.5rem; font-size: 0.9rem;">Total Item Terjual</p>
                             <h2 id="stats-items-sold" style="color: #333; margin: 0;">0</h2>
                         </div>
                     </div>
 
                     <h3>Menu Paling Laku</h3>
-                    <div style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 1rem;">
+                    <div
+                        style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 1rem;">
                         <div id="stats-top-items" style="display: flex; flex-direction: column; gap: 0.5rem;">
                             <!-- Top items rendered here -->
                         </div>
@@ -497,42 +534,56 @@
         </section>
 
         <!-- Edit/Add Menu Modal -->
-        <div id="menu-form-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
-            <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative;">
-                <button onclick="document.getElementById('menu-form-modal').style.display='none'" style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        <div id="menu-form-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+            <div
+                style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative;">
+                <button onclick="document.getElementById('menu-form-modal').style.display='none'"
+                    style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
                 <h3 id="menu-form-title" style="margin-bottom: 1.5rem;">Tambah Menu</h3>
                 <form id="admin-menu-form" onsubmit="event.preventDefault(); app.saveMenu();">
                     <input type="hidden" id="menu-form-id">
-                    
+
                     <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Nama Menu</label>
-                        <input type="text" id="menu-form-name" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Nama
+                            Menu</label>
+                        <input type="text" id="menu-form-name" required
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
                     </div>
-                    
+
                     <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Kategori</label>
-                        <select id="menu-form-category" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Kategori</label>
+                        <select id="menu-form-category" required
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
                             <option value="Makanan">Makanan</option>
                             <option value="Minuman">Minuman</option>
                             <option value="Snack">Snack</option>
                         </select>
                     </div>
-                    
+
                     <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Harga (Rp)</label>
-                        <input type="number" id="menu-form-price" required min="0" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Harga
+                            (Rp)</label>
+                        <input type="number" id="menu-form-price" required min="0"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
                     </div>
-                    
+
                     <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Deskripsi</label>
-                        <textarea id="menu-form-desc" rows="3" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;"></textarea>
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;">Deskripsi</label>
+                        <textarea id="menu-form-desc" rows="3"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;"></textarea>
                     </div>
-                    
+
                     <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                         <input type="checkbox" id="menu-form-active" checked style="width: 18px; height: 18px;">
-                        <label for="menu-form-active" style="font-weight: bold; font-size: 0.9rem; cursor: pointer;">Tersedia (Tampilkan ke Pelanggan)</label>
+                        <label for="menu-form-active"
+                            style="font-weight: bold; font-size: 0.9rem; cursor: pointer;">Tersedia (Tampilkan ke
+                            Pelanggan)</label>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary btn-block">Simpan Menu</button>
                 </form>
             </div>
