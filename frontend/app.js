@@ -159,19 +159,10 @@ const app = {
         }
 
         container.innerHTML = filtered.map(item => {
-            let badgeHtml = '';
-            if (item.badge === 'spicy') {
-                badgeHtml = `<span class="menu-badge badge-spicy">🌶️ Lv.${item.spiceLevel || item.spice_level}</span>`;
-            } else if (item.badge === 'ice') {
-                badgeHtml = `<span class="menu-badge badge-ice"><i data-lucide="snowflake" style="width:12px; height:12px; display:inline-block"></i> Ice</span>`;
-            }
-
             return `
                 <div class="menu-card">
                     <div class="menu-img-wrap">
                         <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" class="menu-img">
-                        ${badgeHtml}
-                        ${item.favorite || item.is_favorite ? `<button class="fav-btn"><i data-lucide="heart" fill="currentColor"></i></button>` : ''}
                     </div>
                     <div class="menu-content">
                         <h3 class="menu-title">${item.name}</h3>
