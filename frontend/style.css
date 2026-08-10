@@ -300,7 +300,7 @@ ul {
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(to right, rgba(17, 24, 39, 0.85) 0%, rgba(17, 24, 39, 0.2) 100%), url('/static/bg-hero.jpg');
+    background-image: linear-gradient(to right, rgba(17, 24, 39, 0.85) 0%, rgba(17, 24, 39, 0.2) 100%), url('/static/bg-hero.png');
     background-size: cover;
     background-position: center;
     opacity: 1;
