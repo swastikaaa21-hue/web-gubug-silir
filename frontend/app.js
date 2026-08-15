@@ -365,6 +365,19 @@ const app = {
             isPopupTrigger = true;
         }
 
+        if (item.name === 'Kelapa Muda Utuh') {
+            const modal = document.getElementById('kelapa-utuh-popup-modal');
+            if (modal) {
+                this.populateVariantModal('Varian - Kelapa Muda Utuh', 'kelapa-utuh-variant-list');
+                modal.style.display = 'flex';
+                void modal.offsetWidth;
+                modal.style.opacity = '1';
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) modalContent.style.transform = 'scale(1)';
+            }
+            isPopupTrigger = true;
+        }
+
         if (item.name === 'Gorengan') {
             const modal = document.getElementById('gorengan-popup-modal');
             if (modal) {
