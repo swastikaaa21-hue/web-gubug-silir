@@ -147,6 +147,7 @@ const app = {
         state.searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
 
         const filtered = state.menu.filter(item => {
+            if (item.category && item.category.startsWith('Varian - ')) return false;
             const matchCat = state.activeCategory === 'Semua' || item.category === state.activeCategory;
             const matchSearch = item.name.toLowerCase().includes(state.searchQuery) || 
                                 (item.desc && item.desc.toLowerCase().includes(state.searchQuery));
@@ -181,6 +182,21 @@ const app = {
         lucide.createIcons();
     },
 
+    populateVariantModal(variantCategory, ulId) {
+        const ul = document.getElementById(ulId);
+        if (!ul) return;
+        const variants = state.menu.filter(i => i.category === variantCategory);
+        if (variants.length === 0) {
+            ul.innerHTML = '<li style="padding: 0.5rem 0; color: #666; text-align: center;">Tidak ada varian yang tersedia saat ini.</li>';
+            return;
+        }
+        ul.innerHTML = variants.map(v => `
+            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                <span>${v.name}</span> <strong>Rp ${v.price.toLocaleString('id-ID')}</strong>
+            </li>
+        `).join('');
+    },
+
     addToCart(event, id) {
         const item = state.menu.find(i => i.id === id);
         if(!item) return;
@@ -188,6 +204,7 @@ const app = {
         if (item.name === 'Es Teh Jumbo') {
             const modal = document.getElementById('teh-popup-modal');
             if (modal) {
+                this.populateVariantModal('Varian - Es Teh Jumbo', 'teh-variant-list');
                 modal.style.display = 'flex';
                 void modal.offsetWidth;
                 modal.style.opacity = '1';
@@ -199,6 +216,7 @@ const app = {
         if (item.name === 'Pop Ice') {
             const modal = document.getElementById('popice-popup-modal');
             if (modal) {
+                this.populateVariantModal('Varian - Pop Ice', 'popice-variant-list');
                 modal.style.display = 'flex';
                 void modal.offsetWidth;
                 modal.style.opacity = '1';
@@ -210,6 +228,7 @@ const app = {
         if (item.name === 'Extra Joss') {
             const modal = document.getElementById('extrajoss-popup-modal');
             if (modal) {
+                this.populateVariantModal('Varian - Extra Joss', 'extrajoss-variant-list');
                 modal.style.display = 'flex';
                 void modal.offsetWidth;
                 modal.style.opacity = '1';
@@ -221,6 +240,7 @@ const app = {
         if (item.name === 'Nutrisari') {
             const modal = document.getElementById('nutrisari-popup-modal');
             if (modal) {
+                this.populateVariantModal('Varian - Nutrisari', 'nutrisari-variant-list');
                 modal.style.display = 'flex';
                 void modal.offsetWidth;
                 modal.style.opacity = '1';
@@ -232,6 +252,19 @@ const app = {
         if (item.name === 'Es Kelapa Muda') {
             const modal = document.getElementById('kelapa-popup-modal');
             if (modal) {
+                this.populateVariantModal('Varian - Es Kelapa Muda', 'kelapa-variant-list');
+                modal.style.display = 'flex';
+                void modal.offsetWidth;
+                modal.style.opacity = '1';
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) modalContent.style.transform = 'scale(1)';
+            }
+        }
+
+        if (item.name === 'Gorengan') {
+            const modal = document.getElementById('gorengan-popup-modal');
+            if (modal) {
+                this.populateVariantModal('Varian - Gorengan', 'gorengan-variant-list');
                 modal.style.display = 'flex';
                 void modal.offsetWidth;
                 modal.style.opacity = '1';
