@@ -623,22 +623,41 @@ const app = {
     async loadAdminMenu() {
         try {
             const res = await fetch('/api/admin/menu');
-            const data = await res.json();
-            const tbody = document.getElementById('admin-menu-table-body');
-            tbody.innerHTML = data.map(item => `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 1rem;">${item.name}</td>
-                    <td style="padding: 1rem;">${item.category}</td>
-                    <td style="padding: 1rem;">${this.formatMoney(item.price)}</td>
-                    <td style="padding: 1rem;">${item.is_active ? '<span style="color:green;font-weight:bold;">Aktif</span>' : '<span style="color:red;">Disembunyikan</span>'}</td>
-                    <td style="padding: 1rem; text-align: right;">
-                        <button onclick='app.editMenu(${JSON.stringify(item).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">Edit</button>
-                    </td>
-                </tr>
-            `).join('');
+            this.adminMenuData = await res.json();
+            this.renderAdminMenuTable();
         } catch(e) {
             console.error(e);
         }
+    },
+
+    filterAdminMenu(query) {
+        this.adminSearchQuery = (query || '').toLowerCase();
+        this.renderAdminMenuTable();
+    },
+
+    renderAdminMenuTable() {
+        const tbody = document.getElementById('admin-menu-table-body');
+        if (!tbody) return;
+        
+        const data = this.adminSearchQuery 
+            ? this.adminMenuData.filter(item => 
+                (item.name && item.name.toLowerCase().includes(this.adminSearchQuery)) || 
+                (item.category && item.category.toLowerCase().includes(this.adminSearchQuery))
+              )
+            : this.adminMenuData;
+
+        tbody.innerHTML = data.map(item => `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 1rem;">${item.name}</td>
+                <td style="padding: 1rem;">${item.category}</td>
+                <td style="padding: 1rem;">${this.formatMoney(item.price)}</td>
+                <td style="padding: 1rem;">${item.is_active ? '<span style="color:green;font-weight:bold;">Aktif</span>' : '<span style="color:red;">Disembunyikan</span>'}</td>
+                <td style="padding: 1rem; text-align: right;">
+                    <button onclick='app.editMenu(${JSON.stringify(item).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">Edit</button>
+                </td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
     },
 
     async loadAdminStats() {

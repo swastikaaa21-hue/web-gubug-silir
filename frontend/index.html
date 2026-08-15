@@ -469,11 +469,17 @@
 
                 <!-- Kelola Menu Tab -->
                 <div id="admin-content-menu" class="admin-content">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3>Daftar Menu</h3>
-                        <button class="btn btn-primary" onclick="app.showAddMenuModal()"><i data-lucide="plus"></i>
-                            Tambah Menu</button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                        <h3 style="margin: 0;">Daftar Menu</h3>
+                        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                            <div style="position: relative;">
+                                <i data-lucide="search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #999;"></i>
+                                <input type="text" placeholder="Cari menu atau kategori..." 
+                                    style="padding: 0.6rem 1rem 0.6rem 2.2rem; border: 1px solid #ddd; border-radius: 8px; outline: none; width: 250px; max-width: 100%; box-sizing: border-box;"
+                                    oninput="app.filterAdminMenu(this.value)">
+                            </div>
+                            <button class="btn btn-primary" onclick="app.showAddMenuModal()" style="white-space: nowrap;"><i data-lucide="plus"></i> Tambah Menu</button>
+                        </div>
                     </div>
                     <div
                         style="overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
