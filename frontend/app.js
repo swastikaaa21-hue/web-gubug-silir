@@ -377,6 +377,19 @@ const app = {
             }
             isPopupTrigger = true;
         }
+
+        if (item.name === 'Seblak') {
+            const modal = document.getElementById('seblak-popup-modal');
+            if (modal) {
+                this.populateVariantModal('Varian - Seblak', 'seblak-variant-list');
+                modal.style.display = 'flex';
+                void modal.offsetWidth;
+                modal.style.opacity = '1';
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) modalContent.style.transform = 'scale(1)';
+            }
+            isPopupTrigger = true;
+        }
         
         // Prevent base items from entering cart if they only serve to trigger popups
         if (isPopupTrigger) return;
