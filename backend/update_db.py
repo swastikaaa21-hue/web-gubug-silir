@@ -14,9 +14,7 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 try:
-    response1 = supabase.table("menu_items").delete().eq("name", "Es Teh Leci").execute()
-    response2 = supabase.table("menu_items").delete().eq("name", "Es Teh Lemon").execute()
-    response3 = supabase.table("menu_items").delete().eq("name", "Es Milk Tea").execute()
+    response1 = supabase.table("menu_items").delete().eq("name", "Extra Joss Susu").execute()
     print("Delete successful")
     print("Update successful:", response)
 except Exception as e:
