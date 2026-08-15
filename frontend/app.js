@@ -229,6 +229,17 @@ const app = {
             }
         }
 
+        if (item.name === 'Es Kelapa Muda') {
+            const modal = document.getElementById('kelapa-popup-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                void modal.offsetWidth;
+                modal.style.opacity = '1';
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) modalContent.style.transform = 'scale(1)';
+            }
+        }
+
         const existing = state.cart.find(i => i.id === id);
         if (existing) {
             existing.qty += 1;
