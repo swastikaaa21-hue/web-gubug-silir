@@ -1359,7 +1359,7 @@ textarea:focus {
     .hero {
         flex-direction: column;
         padding: 4rem 1.5rem;
-        text-align: center;
+        text-align: left;
     }
 
     .hero-title {
@@ -1367,16 +1367,66 @@ textarea:focus {
     }
 
     .hero-buttons {
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .features-strip {
-        justify-content: center;
-        flex-wrap: wrap;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+    }
+
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        flex: 1;
+    }
+
+    .feature-item h4 {
+        font-size: 0.8rem;
+    }
+
+    .feature-item p {
+        font-size: 0.7rem;
     }
 
     .steps-container {
-        flex-direction: column;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+
+    .step-card {
+        padding: 1.5rem 0.5rem;
+        flex: 1;
+        text-align: center;
+    }
+
+    .step-card h3 {
+        font-size: 0.75rem;
+    }
+
+    .step-card p {
+        font-size: 0.65rem;
+    }
+
+    .step-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 0 auto 0.5rem;
+    }
+
+    .step-icon i {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .step-number {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.75rem;
+        top: -0.75rem;
     }
 
     .checkout-grid {

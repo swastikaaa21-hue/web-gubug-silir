@@ -36,7 +36,6 @@
         <div class="nav-links">
             <button class="nav-link active" data-nav="landing" onclick="app.showView('landing')">Beranda</button>
             <button class="nav-link" data-nav="menu" onclick="app.showView('menu')">Menu</button>
-            <button class="nav-link" data-nav="promosi" onclick="app.showView('promosi')">Promosi</button>
         </div>
         <div class="nav-actions">
             <button class="cart-btn" onclick="app.toggleCart()">
@@ -86,22 +85,22 @@
                         <div class="feature-item">
                             <div class="feature-icon bg-orange"><i data-lucide="store"></i></div>
                             <div>
-                                <h4>Ambil di Tempat</h4>
-                                <p>Tanpa antri, pesanan langsung siap</p>
+                                <h4>Ambil Cepat</h4>
+                                <p>Langsung siap</p>
                             </div>
                         </div>
                         <div class="feature-item">
                             <div class="feature-icon bg-green"><i data-lucide="shield-check"></i></div>
                             <div>
-                                <h4>Pembayaran Aman</h4>
-                                <p>100% terlindungi</p>
+                                <h4>Bayar Aman</h4>
+                                <p>Terlindungi</p>
                             </div>
                         </div>
                         <div class="feature-item">
                             <div class="feature-icon bg-orange"><i data-lucide="star"></i></div>
                             <div>
-                                <h4>Kualitas Terbaik</h4>
-                                <p>Pilihan terbaik untuk Anda</p>
+                                <h4>Kualitas</h4>
+                                <p>Pilihan terbaik</p>
                             </div>
                         </div>
                     </div>
@@ -118,24 +117,22 @@
                     <div class="step-card animate-on-scroll stagger-1">
                         <div class="step-number bg-orange">1</div>
                         <div class="step-icon bg-orange-light"><i data-lucide="shopping-bag"></i></div>
-                        <h3>Pilih Menu Anda</h3>
-                        <p>Jelajahi menu pilihan kami dan temukan hidangan favorit Anda dari berbagai pilihan masakan
-                            autentik.</p>
+                        <h3>Pilih Menu</h3>
+                        <p>Pilih hidangan favorit dari menu kami.</p>
                     </div>
 
                     <div class="step-card animate-on-scroll stagger-2">
                         <div class="step-number bg-green">2</div>
                         <div class="step-icon bg-green-light"><i data-lucide="clock"></i></div>
-                        <h3>Buat Pesanan</h3>
-                        <p>Sesuaikan pesanan Anda, konfirmasi pesanan, dan selesaikan pembayaran untuk diproses.</p>
+                        <h3>Pesan & Bayar</h3>
+                        <p>Konfirmasi pesanan dan bayar dengan mudah.</p>
                     </div>
 
                     <div class="step-card animate-on-scroll stagger-3">
                         <div class="step-number bg-orange-alt">3</div>
                         <div class="step-icon bg-orange-alt-light"><i data-lucide="store"></i></div>
                         <h3>Ambil Pesanan</h3>
-                        <p>Datang ke Gubug Silir, tunjukkan pesanan Anda, dan langsung bawa pulang tanpa perlu antri.
-                        </p>
+                        <p>Tunjukkan struk dan bawa pulang tanpa antri.</p>
                     </div>
                 </div>
             </div>
@@ -219,38 +216,7 @@
             </div>
         </section>
 
-        <!-- ==================== PROMOSI VIEW ==================== -->
-        <section id="view-promosi" class="view hidden">
-            <div class="menu-header">
-                <h2>Promo & Penawaran Spesial</h2>
-            </div>
 
-            <div class="promosi-grid animate-on-scroll">
-                <div class="promo-card">
-                    <div class="promo-badge">PROMO SPESIAL</div>
-                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop"
-                        alt="Promo" class="promo-img">
-                    <div class="promo-content">
-                        <h3>Diskon 20% Akhir Pekan</h3>
-                        <p>Nikmati diskon 20% untuk semua pembelian di atas Rp 150.000 menggunakan kode promo
-                            <strong>WEEKEND20</strong>.
-                        </p>
-                        <button class="btn btn-primary btn-block">Klaim Promo</button>
-                    </div>
-                </div>
-
-                <div class="promo-card stagger-1">
-                    <div class="promo-badge bg-green">MENU BARU</div>
-                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&h=300&fit=crop"
-                        alt="Promo" class="promo-img">
-                    <div class="promo-content">
-                        <h3>Paket Hemat Keluarga</h3>
-                        <p>Makan kenyang sekeluarga dengan paket spesial, gratis 4 minuman dingin segar.</p>
-                        <button class="btn btn-secondary btn-block">Lihat Detail</button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
 
         <!-- ==================== CART DRAWER ==================== -->
@@ -414,6 +380,25 @@
                 <i data-lucide="chevron-right"></i>
             </div>
         </div>
+
+        <!-- ==================== BOTTOM NAVIGATION (MOBILE) ==================== -->
+        <nav class="bottom-nav">
+            <button class="bottom-nav-item active" data-nav="landing" onclick="app.showView('landing')">
+                <i data-lucide="home"></i>
+                <span>Beranda</span>
+            </button>
+            <button class="bottom-nav-item" data-nav="menu" onclick="app.showView('menu')">
+                <i data-lucide="book-open"></i>
+                <span>Menu</span>
+            </button>
+            <button class="bottom-nav-item" onclick="app.toggleCart()">
+                <div style="position: relative;">
+                    <i data-lucide="shopping-cart"></i>
+                    <span class="cart-badge bottom-cart-badge" id="bottom-cart-count" style="display: none;">0</span>
+                </div>
+                <span>Keranjang</span>
+            </button>
+        </nav>
 
         <!-- QRIS Modal -->
         <div id="qris-modal"
