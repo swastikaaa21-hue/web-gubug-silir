@@ -30,12 +30,14 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="nav-brand">
-            <span class="brand-text">Gubug<span class="brand-highlight">Silir</span></span>
-        </div>
-        <div class="nav-links">
-            <button class="nav-link active" data-nav="landing" onclick="app.showView('landing')">Beranda</button>
-            <button class="nav-link" data-nav="menu" onclick="app.showView('menu')">Menu</button>
+        <div class="nav-left-group" style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+            <div class="nav-brand">
+                <span class="brand-text">Gubug<span class="brand-highlight">Silir</span></span>
+            </div>
+            <div class="nav-links" style="margin-top: 0; padding-top: 0.2rem; justify-content: center; gap: 1rem;">
+                <button class="nav-link active" data-nav="landing" onclick="app.showView('landing')">Beranda</button>
+                <button class="nav-link" data-nav="menu" onclick="app.showView('menu')">Menu</button>
+            </div>
         </div>
         <div class="nav-actions">
             <button class="cart-btn" onclick="app.toggleCart()">

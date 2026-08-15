@@ -1438,16 +1438,6 @@ textarea:focus {
         padding: 1rem 1.5rem;
     }
 
-    .nav-links {
-        display: flex;
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        margin-top: 0.75rem;
-        gap: 1.5rem;
-        font-size: 0.9rem;
-    }
-
     .menu-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 0.5rem;
