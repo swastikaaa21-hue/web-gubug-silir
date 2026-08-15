@@ -222,13 +222,6 @@ const app = {
         setTimeout(() => { 
             btn.innerHTML = icon; 
             lucide.createIcons(); 
-            
-            // Close modal automatically
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.opacity = '0';
-                setTimeout(() => modal.style.display = 'none', 300);
-            }
         }, 800);
     },
 
@@ -363,9 +356,8 @@ const app = {
         }
 
         container.innerHTML = state.cart.map(item => `
-            <div class="cart-item">
-                <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" class="cart-item-img">
-                <div class="cart-item-info">
+            <div class="cart-item" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                <div class="cart-item-info" style="flex: 1;">
                     <div class="cart-item-title">${item.name}</div>
                     <div class="cart-item-price">${this.formatMoney(item.price)}</div>
                 </div>
