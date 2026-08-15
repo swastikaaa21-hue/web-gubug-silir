@@ -589,6 +589,46 @@
             </div>
         </div>
 
+        <!-- Teh Popup Modal -->
+        <div id="teh-popup-modal" class="modal-overlay"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+            <div class="modal-content"
+                style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative;">
+                <button onclick="document.getElementById('teh-popup-modal').style.opacity='0'; setTimeout(()=>document.getElementById('teh-popup-modal').style.display='none', 300)"
+                    style="position: absolute; right: 1rem; top: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                <h3 style="margin-bottom: 1rem;">Menu Teh Lainnya</h3>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Menu teh di bawah ini baru saja dihapus dan tidak tersedia:</p>
+                <ul style="list-style: none; padding: 0; margin-bottom: 1.5rem; text-align: left; background: #f9f9f9; padding: 1rem; border-radius: 8px;">
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">Es Teh Biasa (18 Oz)</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">Es Teh Leci</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">Es Teh Lemon</li>
+                    <li style="padding: 0.5rem 0;">Es Milk Tea</li>
+                </ul>
+                <button class="btn btn-primary btn-block" onclick="document.getElementById('teh-popup-modal').style.opacity='0'; setTimeout(()=>document.getElementById('teh-popup-modal').style.display='none', 300)">Tutup</button>
+            </div>
+        </div>
+
+        <!-- Pop Ice Popup Modal -->
+        <div id="popice-popup-modal" class="modal-overlay"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+            <div class="modal-content"
+                style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative;">
+                <button onclick="document.getElementById('popice-popup-modal').style.opacity='0'; setTimeout(()=>document.getElementById('popice-popup-modal').style.display='none', 300)"
+                    style="position: absolute; right: 1rem; top: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                <h3 style="margin-bottom: 1rem;">Varian Rasa Pop Ice</h3>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Silakan tuliskan rasa pilihan Anda pada <strong style="color:var(--primary);">Catatan Pesanan</strong> saat melakukan checkout:</p>
+                <ul style="list-style: none; padding: 0; margin-bottom: 1.5rem; text-align: left; background: #f9f9f9; padding: 1rem; border-radius: 8px;">
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">• Coklat</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">• Strawberry</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">• Vanilla Blue</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">• Melon</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">• Permen Karet (Bubblegum)</li>
+                    <li style="padding: 0.5rem 0;">• Taro</li>
+                </ul>
+                <button class="btn btn-primary btn-block" onclick="document.getElementById('popice-popup-modal').style.opacity='0'; setTimeout(()=>document.getElementById('popice-popup-modal').style.display='none', 300)">Tutup & Lanjutkan</button>
+            </div>
+        </div>
+
     </main>
 
     <!-- App JS -->
