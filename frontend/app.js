@@ -283,6 +283,19 @@ const app = {
             isPopupTrigger = true;
         }
 
+        if (item.name === 'Es Good Day') {
+            const modal = document.getElementById('goodday-popup-modal');
+            if (modal) {
+                this.populateVariantModal('Varian - Es Good Day', 'goodday-variant-list');
+                modal.style.display = 'flex';
+                void modal.offsetWidth;
+                modal.style.opacity = '1';
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) modalContent.style.transform = 'scale(1)';
+            }
+            isPopupTrigger = true;
+        }
+
         if (item.name === 'Es Kelapa Muda') {
             const modal = document.getElementById('kelapa-popup-modal');
             if (modal) {
@@ -646,17 +659,58 @@ const app = {
               )
             : this.adminMenuData;
 
-        tbody.innerHTML = data.map(item => `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 1rem;">${item.name}</td>
-                <td style="padding: 1rem;">${item.category}</td>
-                <td style="padding: 1rem;">${this.formatMoney(item.price)}</td>
-                <td style="padding: 1rem;">${item.is_active ? '<span style="color:green;font-weight:bold;">Aktif</span>' : '<span style="color:red;">Disembunyikan</span>'}</td>
+        const mainMenus = data.filter(item => !item.category.startsWith('Varian - '));
+        const subMenus = data.filter(item => item.category.startsWith('Varian - '));
+
+        let html = '';
+        mainMenus.forEach(main => {
+            html += `
+            <tr style="border-bottom: 1px solid #eee; background: white;">
+                <td style="padding: 1rem; font-weight: bold;">${main.name}</td>
+                <td style="padding: 1rem;">${main.category}</td>
+                <td style="padding: 1rem;">${this.formatMoney(main.price)}</td>
+                <td style="padding: 1rem;">${main.is_active ? '<span style="color:green;font-weight:bold;">Aktif</span>' : '<span style="color:red;">Disembunyikan</span>'}</td>
                 <td style="padding: 1rem; text-align: right;">
-                    <button onclick='app.editMenu(${JSON.stringify(item).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">Edit</button>
+                    <button onclick='app.editMenu(${JSON.stringify(main).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer; margin-right: 0.5rem;">Edit</button>
+                    <button onclick='app.showAddSubMenuModal("${main.name}")' style="background:#10b981;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">+ Sub-Menu</button>
                 </td>
-            </tr>
-        `).join('');
+            </tr>`;
+            
+            const variants = subMenus.filter(sub => sub.category === `Varian - ${main.name}`);
+            variants.forEach(variant => {
+                html += `
+                <tr style="border-bottom: 1px solid #eee; background: #f9fafb;">
+                    <td style="padding: 0.75rem 1rem 0.75rem 3rem; color: #4b5563;">└ ${variant.name}</td>
+                    <td style="padding: 0.75rem 1rem; color: #6b7280; font-size: 0.9em;">${variant.category}</td>
+                    <td style="padding: 0.75rem 1rem; color: #4b5563;">${this.formatMoney(variant.price)}</td>
+                    <td style="padding: 0.75rem 1rem;">${variant.is_active ? '<span style="color:green;font-size:0.9em;">Aktif</span>' : '<span style="color:red;font-size:0.9em;">Disembunyikan</span>'}</td>
+                    <td style="padding: 0.75rem 1rem; text-align: right;">
+                        <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Edit</button>
+                    </td>
+                </tr>`;
+            });
+        });
+        
+        const renderedVariantIds = new Set();
+        mainMenus.forEach(main => {
+            subMenus.filter(sub => sub.category === `Varian - ${main.name}`).forEach(v => renderedVariantIds.add(v.id));
+        });
+        
+        const orphanSubMenus = subMenus.filter(sub => !renderedVariantIds.has(sub.id));
+        orphanSubMenus.forEach(variant => {
+            html += `
+            <tr style="border-bottom: 1px solid #eee; background: #f9fafb;">
+                <td style="padding: 0.75rem 1rem 0.75rem 3rem; color: #4b5563;">└ ${variant.name}</td>
+                <td style="padding: 0.75rem 1rem; color: #6b7280; font-size: 0.9em;">${variant.category}</td>
+                <td style="padding: 0.75rem 1rem; color: #4b5563;">${this.formatMoney(variant.price)}</td>
+                <td style="padding: 0.75rem 1rem;">${variant.is_active ? '<span style="color:green;font-size:0.9em;">Aktif</span>' : '<span style="color:red;font-size:0.9em;">Disembunyikan</span>'}</td>
+                <td style="padding: 0.75rem 1rem; text-align: right;">
+                    <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Edit</button>
+                </td>
+            </tr>`;
+        });
+
+        tbody.innerHTML = html;
         lucide.createIcons();
     },
 
@@ -692,7 +746,41 @@ const app = {
         document.getElementById('menu-form-title').innerText = 'Tambah Menu';
         document.getElementById('menu-form-id').value = '';
         document.getElementById('menu-form-name').value = '';
-        document.getElementById('menu-form-category').value = 'Makanan';
+        
+        const catSelect = document.getElementById('menu-form-category');
+        // Reset to default options if there were custom ones
+        Array.from(catSelect.options).forEach(opt => {
+            if (opt.value.startsWith('Varian - ')) opt.remove();
+        });
+        catSelect.value = 'Makanan';
+        catSelect.disabled = false;
+        
+        document.getElementById('menu-form-price').value = '';
+        document.getElementById('menu-form-desc').value = '';
+        document.getElementById('menu-form-active').checked = true;
+        document.getElementById('menu-form-modal').style.display = 'flex';
+    },
+
+    showAddSubMenuModal(parentMenuName) {
+        document.getElementById('menu-form-title').innerText = `Tambah Sub-Menu (${parentMenuName})`;
+        document.getElementById('menu-form-id').value = '';
+        document.getElementById('menu-form-name').value = '';
+        
+        const catSelect = document.getElementById('menu-form-category');
+        const customCat = `Varian - ${parentMenuName}`;
+        let exists = false;
+        for (let i = 0; i < catSelect.options.length; i++) {
+            if (catSelect.options[i].value === customCat) exists = true;
+        }
+        if (!exists) {
+            const newOption = document.createElement('option');
+            newOption.value = customCat;
+            newOption.text = customCat;
+            catSelect.appendChild(newOption);
+        }
+        catSelect.value = customCat;
+        catSelect.disabled = true; // Lock the category
+        
         document.getElementById('menu-form-price').value = '';
         document.getElementById('menu-form-desc').value = '';
         document.getElementById('menu-form-active').checked = true;
@@ -703,7 +791,21 @@ const app = {
         document.getElementById('menu-form-title').innerText = 'Edit Menu';
         document.getElementById('menu-form-id').value = item.id;
         document.getElementById('menu-form-name').value = item.name;
-        document.getElementById('menu-form-category').value = item.category;
+        
+        const catSelect = document.getElementById('menu-form-category');
+        let exists = false;
+        for (let i = 0; i < catSelect.options.length; i++) {
+            if (catSelect.options[i].value === item.category) exists = true;
+        }
+        if (!exists) {
+            const newOption = document.createElement('option');
+            newOption.value = item.category;
+            newOption.text = item.category;
+            catSelect.appendChild(newOption);
+        }
+        catSelect.value = item.category;
+        catSelect.disabled = item.category.startsWith('Varian - '); // Lock if it's a sub-menu
+        
         document.getElementById('menu-form-price').value = item.price;
         document.getElementById('menu-form-desc').value = item.description || '';
         document.getElementById('menu-form-active').checked = item.is_active;
@@ -712,9 +814,11 @@ const app = {
 
     async saveMenu() {
         const id = document.getElementById('menu-form-id').value;
+        const catSelect = document.getElementById('menu-form-category');
+        
         const payload = {
             name: document.getElementById('menu-form-name').value,
-            category: document.getElementById('menu-form-category').value,
+            category: catSelect.value,
             price: parseFloat(document.getElementById('menu-form-price').value),
             description: document.getElementById('menu-form-desc').value,
             is_active: document.getElementById('menu-form-active').checked
