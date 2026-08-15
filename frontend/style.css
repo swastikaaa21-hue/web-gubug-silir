@@ -1434,7 +1434,48 @@ textarea:focus {
     }
 
     .nav-links {
-        display: none;
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+
+    .menu-img-wrap {
+        height: 80px;
+    }
+
+    .menu-content {
+        padding: 0.5rem;
+    }
+
+    .menu-title {
+        font-size: 0.7rem;
+        margin-bottom: 0.1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .menu-desc {
+        display: none; /* Hide description on mobile to save space */
+    }
+
+    .menu-price {
+        font-size: 0.75rem;
+    }
+
+    .add-btn {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .add-btn i {
+        width: 0.8rem;
+        height: 0.8rem;
     }
 
     .footer-cols {
