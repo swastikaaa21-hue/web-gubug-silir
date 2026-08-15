@@ -283,7 +283,7 @@ const app = {
             isPopupTrigger = true;
         }
 
-        if (item.name === 'Es Kelapa Muda Gelas') {
+        if (item.name === 'Es Kelapa Muda') {
             const modal = document.getElementById('kelapa-popup-modal');
             if (modal) {
                 this.populateVariantModal('Varian - Es Kelapa Muda', 'kelapa-variant-list');
