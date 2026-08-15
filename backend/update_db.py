@@ -15,8 +15,8 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 try:
     response = supabase.table("menu_items").update({
-        "image": "/asset/lele.png"
-    }).eq("name", "Nasi Penyet Lele").execute()
+        "image": "/asset/gorengan.png"
+    }).eq("name", "Gorengan").execute()
     print("Update successful:", response)
 except Exception as e:
     print("Error updating database:", e)
