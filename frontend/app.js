@@ -26,6 +26,9 @@ async function fetchMenu() {
         app.renderMenu();
     } catch (e) {
         console.error("Failed to fetch menu:", e);
+        if (app && app.showToast) {
+            app.showToast("Gagal memuat menu. Periksa koneksi internet Anda.", "error");
+        }
     }
 }
 
@@ -39,6 +42,9 @@ async function submitOrder(orderData) {
         return await res.json();
     } catch (e) {
         console.error("Failed to submit order:", e);
+        if (app && app.showToast) {
+            app.showToast("Pesanan gagal diproses. Server tidak merespon.", "error");
+        }
         return { success: false };
     }
 }
@@ -49,6 +55,15 @@ const app = {
         // Init Lucide Icons
         lucide.createIcons();
         
+        // Load cart from localStorage
+        this.loadCart();
+        
+        // Load admin token
+        const savedToken = localStorage.getItem('gubugsilir_admin_token');
+        if (savedToken) {
+            this.adminToken = savedToken;
+        }
+
         // Fetch Menu
         fetchMenu();
         
@@ -59,6 +74,47 @@ const app = {
         
         // Setup Scroll Animations
         this.setupScrollAnimations();
+    },
+
+    loadCart() {
+        const savedCart = localStorage.getItem('gubugsilir_cart');
+        if (savedCart) {
+            try {
+                state.cart = JSON.parse(savedCart);
+                this.updateCartCount();
+            } catch (e) {
+                console.error('Failed to parse saved cart');
+            }
+        }
+    },
+
+    saveCart() {
+        localStorage.setItem('gubugsilir_cart', JSON.stringify(state.cart));
+    },
+
+    showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        let icon = 'info';
+        if (type === 'success') icon = 'check-circle';
+        if (type === 'error') icon = 'alert-circle';
+        
+        toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
+        container.appendChild(toast);
+        lucide.createIcons();
+        
+        // Show animation
+        setTimeout(() => toast.classList.add('show'), 10);
+        
+        // Remove after 3s
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     },
 
     setupScrollAnimations() {
@@ -163,7 +219,7 @@ const app = {
             return `
                 <div class="menu-card">
                     <div class="menu-img-wrap">
-                        <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" class="menu-img" ${(item.image && item.image.includes('gelas')) || item.name === 'Kelapa Muda Utuh' ? 'style="object-position: center 15%;"' : ''}>
+                        <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" loading="lazy" class="menu-img" ${(item.image && item.image.includes('gelas')) || item.name === 'Kelapa Muda Utuh' ? 'style="object-position: center 15%;"' : ''}>
                     </div>
                     <div class="menu-content">
                         <h3 class="menu-title">${item.name}</h3>
@@ -357,6 +413,8 @@ const app = {
                 floatingCart.classList.remove('visible');
             }
         }
+        
+        this.saveCart();
     },
 
     renderCart() {
@@ -537,6 +595,12 @@ const app = {
             pagebreak:    { mode: 'avoid-all' }
         };
         html2pdf().set(opt).from(element).save();
+        // Reset state
+        state.cart = [];
+        this.updateCartCount();
+        state.selectedPayment = '';
+        this.renderPaymentMethods();
+        document.getElementById('order-notes').value = '';
     },
 
     clearCart() {
@@ -583,6 +647,7 @@ const app = {
             if(res.ok) {
                 const data = await res.json();
                 this.adminToken = data.token;
+                localStorage.setItem('gubugsilir_admin_token', data.token);
                 
                 // Show modal animation
                 document.getElementById('admin-login-modal').style.display = 'flex';
@@ -608,6 +673,7 @@ const app = {
 
     logoutAdmin() {
         this.adminToken = null;
+        localStorage.removeItem('gubugsilir_admin_token');
         this.showView('landing');
     },
 
@@ -635,7 +701,14 @@ const app = {
 
     async loadAdminMenu() {
         try {
-            const res = await fetch('/api/admin/menu');
+            const res = await fetch('/api/admin/menu', {
+                headers: { 'Authorization': `Bearer ${this.adminToken}` }
+            });
+            if (res.status === 401) {
+                this.showToast('Sesi berakhir, silakan login kembali', 'error');
+                this.logoutAdmin();
+                return;
+            }
             this.adminMenuData = await res.json();
             this.renderAdminMenuTable();
         } catch(e) {
@@ -717,7 +790,14 @@ const app = {
     async loadAdminStats() {
         const period = document.getElementById('stats-period').value;
         try {
-            const res = await fetch(`/api/admin/stats?period=${period}`);
+            const res = await fetch(`/api/admin/stats?period=${period}`, {
+                headers: { 'Authorization': `Bearer ${this.adminToken}` }
+            });
+            if (res.status === 401) {
+                this.showToast('Sesi berakhir, silakan login kembali', 'error');
+                this.logoutAdmin();
+                return;
+            }
             const data = await res.json();
             
             document.getElementById('stats-revenue').innerText = this.formatMoney(data.total_revenue);
@@ -830,11 +910,23 @@ const app = {
         try {
             const res = await fetch(url, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.adminToken}`
+                },
                 body: JSON.stringify(payload)
             });
+            
+            if (res.status === 401) {
+                this.showToast('Sesi berakhir, silakan login kembali', 'error');
+                this.logoutAdmin();
+                document.getElementById('menu-form-modal').style.display = 'none';
+                return;
+            }
+
             if(res.ok) {
                 document.getElementById('menu-form-modal').style.display = 'none';
+                this.showToast('Menu berhasil disimpan', 'success');
                 this.loadAdminMenu();
                 fetchMenu(); // Refresh public menu
             } else {

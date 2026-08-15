@@ -1,13 +1,14 @@
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import midtransclient
-from fastapi import Request
-
+import jwt
+from datetime import datetime, timedelta, timezone
 load_dotenv()
 
 app = FastAPI(title="Gubug Silir API")
@@ -141,21 +142,39 @@ async def midtrans_webhook(request: Request):
         print(f"Webhook error: {e}")
         raise HTTPException(status_code=500, detail="Webhook processing failed")
 
+# JWT Configuration
+JWT_SECRET = os.getenv("JWT_SECRET", "super-secret-key-gubugsilir")
+security = HTTPBearer()
+
+def verify_admin_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=["HS256"])
+        if payload.get("role") != "admin":
+            raise HTTPException(status_code=401, detail="Bukan admin")
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token kedaluwarsa, silakan login kembali")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Token tidak valid")
+
 @app.post("/api/admin/login")
 def admin_login(data: AdminLogin):
     if data.password == "ayucitradewi":
-        return {"success": True, "token": "admin-token-123"}
+        # Buat token expired dalam 24 jam
+        exp = datetime.now(timezone.utc) + timedelta(hours=24)
+        token = jwt.encode({"role": "admin", "exp": exp}, JWT_SECRET, algorithm="HS256")
+        return {"success": True, "token": token}
     raise HTTPException(status_code=401, detail="Sandi salah")
 
 @app.get("/api/admin/menu")
-def get_admin_menu():
+def get_admin_menu(token: dict = Depends(verify_admin_token)):
     if not supabase:
         raise HTTPException(status_code=500, detail="Supabase not configured")
     res = supabase.table("menu_items").select("*").execute()
     return res.data
 
 @app.post("/api/admin/menu")
-def create_admin_menu(item: MenuItemCreate):
+def create_admin_menu(item: MenuItemCreate, token: dict = Depends(verify_admin_token)):
     if not supabase:
         raise HTTPException(status_code=500, detail="Supabase not configured")
     data = item.dict()
@@ -163,7 +182,7 @@ def create_admin_menu(item: MenuItemCreate):
     return {"success": True, "data": res.data[0]}
 
 @app.put("/api/admin/menu/{item_id}")
-def update_admin_menu(item_id: int, item: MenuItemCreate):
+def update_admin_menu(item_id: int, item: MenuItemCreate, token: dict = Depends(verify_admin_token)):
     if not supabase:
         raise HTTPException(status_code=500, detail="Supabase not configured")
     data = item.dict()
@@ -173,7 +192,7 @@ def update_admin_menu(item_id: int, item: MenuItemCreate):
 from datetime import datetime, timedelta, timezone
 
 @app.get("/api/admin/stats")
-def get_admin_stats(period: str = "all"):
+def get_admin_stats(period: str = "all", token: dict = Depends(verify_admin_token)):
     # period could be: daily, weekly, monthly, all
     if not supabase:
         raise HTTPException(status_code=500, detail="Supabase not configured")
