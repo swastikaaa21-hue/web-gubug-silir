@@ -191,15 +191,52 @@ const app = {
             return;
         }
         ul.innerHTML = variants.map(v => `
-            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                <span>${v.name}</span> <strong>Rp ${v.price.toLocaleString('id-ID')}</strong>
+            <li style="padding: 0; margin-bottom: 0.5rem;">
+                <button onclick="app.addVariantToCart(event, ${v.id}, '${ulId.split('-')[0]}-popup-modal')" 
+                        style="width: 100%; text-align: left; background: white; border: 1px solid #ddd; padding: 0.8rem 1rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;">
+                    <span style="font-weight: 500;">${v.name}</span> 
+                    <strong style="color: var(--primary);">Rp ${v.price.toLocaleString('id-ID')} <i data-lucide="plus" style="width: 16px; height: 16px; vertical-align: middle; margin-left: 0.5rem;"></i></strong>
+                </button>
             </li>
         `).join('');
+        lucide.createIcons();
+    },
+
+    addVariantToCart(event, id, modalId) {
+        const item = state.menu.find(i => i.id === id);
+        if(!item) return;
+
+        const existing = state.cart.find(i => i.id === id);
+        if (existing) {
+            existing.qty += 1;
+        } else {
+            state.cart.push({ ...item, qty: 1 });
+        }
+        this.updateCartCount();
+
+        // Visual feedback
+        const btn = event.currentTarget;
+        const icon = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i> Berhasil ditambahkan';
+        lucide.createIcons();
+        setTimeout(() => { 
+            btn.innerHTML = icon; 
+            lucide.createIcons(); 
+            
+            // Close modal automatically
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
+        }, 800);
     },
 
     addToCart(event, id) {
         const item = state.menu.find(i => i.id === id);
         if(!item) return;
+
+        let isPopupTrigger = false;
 
         if (item.name === 'Es Teh Jumbo') {
             const modal = document.getElementById('teh-popup-modal');
@@ -211,6 +248,7 @@ const app = {
                 const modalContent = modal.querySelector('.modal-content');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
             }
+            isPopupTrigger = true;
         }
 
         if (item.name === 'Pop Ice') {
@@ -223,6 +261,7 @@ const app = {
                 const modalContent = modal.querySelector('.modal-content');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
             }
+            isPopupTrigger = true;
         }
 
         if (item.name === 'Extra Joss') {
@@ -235,6 +274,7 @@ const app = {
                 const modalContent = modal.querySelector('.modal-content');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
             }
+            isPopupTrigger = true;
         }
 
         if (item.name === 'Nutrisari') {
@@ -247,6 +287,7 @@ const app = {
                 const modalContent = modal.querySelector('.modal-content');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
             }
+            isPopupTrigger = true;
         }
 
         if (item.name === 'Es Kelapa Muda') {
@@ -259,6 +300,7 @@ const app = {
                 const modalContent = modal.querySelector('.modal-content');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
             }
+            isPopupTrigger = true;
         }
 
         if (item.name === 'Gorengan') {
@@ -271,7 +313,11 @@ const app = {
                 const modalContent = modal.querySelector('.modal-content');
                 if (modalContent) modalContent.style.transform = 'scale(1)';
             }
+            isPopupTrigger = true;
         }
+        
+        // Prevent base items from entering cart if they only serve to trigger popups
+        if (isPopupTrigger) return;
 
         const existing = state.cart.find(i => i.id === id);
         if (existing) {
@@ -459,10 +505,10 @@ const app = {
         const tbody = document.getElementById('receipt-table-body');
         tbody.innerHTML = state.cart.map(item => `
             <tr style="border-bottom: 1px dashed #eee;">
-                <td style="padding: 12px 8px; color: #333;">${item.name}</td>
+                <td style="padding: 12px 8px; text-align: center; color: #333;">${item.name}</td>
                 <td style="padding: 12px 8px; text-align: center; color: #333;">${item.qty}</td>
-                <td style="padding: 12px 8px; text-align: right; color: #333;">${this.formatMoney(item.price)}</td>
-                <td style="padding: 12px 8px; text-align: right; color: #333; font-weight: 500;">${this.formatMoney(item.price * item.qty)}</td>
+                <td style="padding: 12px 8px; text-align: center; color: #333;">${this.formatMoney(item.price)}</td>
+                <td style="padding: 12px 8px; text-align: center; color: #333; font-weight: 500;">${this.formatMoney(item.price * item.qty)}</td>
             </tr>
         `).join('');
         document.getElementById('receipt-total').innerText = this.formatMoney(total);
