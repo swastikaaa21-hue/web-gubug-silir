@@ -217,7 +217,7 @@ const app = {
 
         container.innerHTML = filtered.map(item => {
             return `
-                <div class="menu-card">
+                <div class="menu-card" style="cursor: pointer;" onclick="app.showMenuDetail(${item.id})">
                     <div class="menu-img-wrap">
                         <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" loading="lazy" class="menu-img" ${(item.image && item.image.includes('gelas')) || item.name === 'Kelapa Muda Utuh' ? 'style="object-position: center 15%;"' : ''}>
                     </div>
@@ -282,6 +282,7 @@ const app = {
     },
 
     addToCart(event, id) {
+        if (event) event.stopPropagation();
         const item = state.menu.find(i => i.id === id);
         if(!item) return;
 
@@ -421,6 +422,46 @@ const app = {
         btn.innerHTML = '<i data-lucide="check"></i>';
         lucide.createIcons();
         setTimeout(() => { btn.innerHTML = icon; lucide.createIcons(); }, 1000);
+    },
+
+    showMenuDetail(id) {
+        const item = state.menu.find(i => i.id === id);
+        if(!item) return;
+
+        const imgEl = document.getElementById('detail-modal-img');
+        if (item.image) {
+            imgEl.src = encodeURI(item.image);
+            imgEl.style.display = 'block';
+        } else {
+            imgEl.style.display = 'none';
+        }
+        
+        document.getElementById('detail-modal-title').innerText = item.name;
+        document.getElementById('detail-modal-desc').innerText = item.desc || item.description || 'Deskripsi tidak tersedia.';
+        document.getElementById('detail-modal-price').innerText = this.formatMoney(item.price);
+        
+        const btn = document.getElementById('detail-modal-add-btn');
+        btn.onclick = (e) => {
+            this.addToCart(e, id);
+            this.closeMenuDetail();
+        };
+
+        const modal = document.getElementById('menu-detail-modal');
+        modal.style.display = 'flex';
+        void modal.offsetWidth;
+        modal.style.opacity = '1';
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) modalContent.style.transform = 'scale(1)';
+    },
+
+    closeMenuDetail() {
+        const modal = document.getElementById('menu-detail-modal');
+        modal.style.opacity = '0';
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) modalContent.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     },
 
     updateCartCount() {
