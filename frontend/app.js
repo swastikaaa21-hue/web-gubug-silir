@@ -229,7 +229,7 @@ const app = {
             return `
                 <div class="menu-card" style="cursor: pointer;" onclick="app.showMenuDetail(${item.id})">
                     <div class="menu-img-wrap">
-                        <img src="${item.image ? encodeURI(item.image) : ''}" alt="${item.name}" loading="lazy" class="menu-img" ${(item.image && item.image.includes('gelas')) || item.name === 'Kelapa Muda Utuh' ? 'style="object-position: center 15%;"' : ''}>
+                        <img src="${item.image || ''}" alt="${item.name}" loading="lazy" class="menu-img" ${(item.image && item.image.includes('gelas')) || item.name === 'Kelapa Muda Utuh' ? 'style="object-position: center 15%;"' : ''}>
                     </div>
                     <div class="menu-content">
                         <h3 class="menu-title">${item.name}</h3>
@@ -440,7 +440,7 @@ const app = {
 
         const imgEl = document.getElementById('detail-modal-img');
         if (item.image) {
-            imgEl.src = encodeURI(item.image);
+            imgEl.src = item.image;
             imgEl.style.display = 'block';
         } else {
             imgEl.style.display = 'none';
