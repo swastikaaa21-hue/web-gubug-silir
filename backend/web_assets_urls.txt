@@ -1,0 +1,2 @@
+BG_HERO_URL=https://mrmnjiirakwjjfooqzwt.supabase.co/storage/v1/object/public/web-assets/bg-hero.png
+QRIS_URL=https://mrmnjiirakwjjfooqzwt.supabase.co/storage/v1/object/public/web-assets/qris.jpeg

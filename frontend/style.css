@@ -310,7 +310,7 @@ ul {
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(to right, rgba(17, 24, 39, 0.85) 0%, rgba(17, 24, 39, 0.2) 100%), url('/static/bg-hero.png');
+    background-image: linear-gradient(to right, rgba(17, 24, 39, 0.85) 0%, rgba(17, 24, 39, 0.2) 100%), url('https://mrmnjiirakwjjfooqzwt.supabase.co/storage/v1/object/public/web-assets/bg-hero.png');
     background-size: cover;
     background-position: center;
     opacity: 1;
@@ -1772,11 +1772,91 @@ textarea:focus {
     transform: translateY(0);
 }
 
-.toast-info { background-color: var(--text-muted); }
-.toast-success { background-color: var(--secondary); }
-.toast-error { background-color: #ef4444; }
 
-.toast i {
-    width: 18px;
-    height: 18px;
+/* Admin Mobile Responsiveness */
+@media (max-width: 768px) {
+    #admin-content-menu table thead {
+        display: none;
+    }
+    
+    #admin-content-menu > div {
+        background: transparent !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }
+
+    #admin-content-menu table {
+        display: block;
+    }
+
+    #admin-menu-table-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #admin-menu-table-body tr {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: white !important;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        border: 1px solid #e5e7eb !important;
+    }
+
+    #admin-menu-table-body td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0 !important;
+        text-align: right !important;
+        border: none !important;
+        color: var(--text-muted);
+    }
+
+    /* Name Cell */
+    #admin-menu-table-body td:nth-child(1) {
+        font-size: 1.1rem;
+        color: var(--text-main);
+        justify-content: flex-start;
+        padding-bottom: 0.5rem !important;
+        border-bottom: 1px dashed #e5e7eb !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    #admin-menu-table-body tr td:nth-child(1)::before {
+        display: none; /* No label for name */
+    }
+
+    /* Add labels */
+    #admin-menu-table-body td:nth-child(2)::before { content: "Kategori"; font-weight: 500; color: var(--text-main); }
+    #admin-menu-table-body td:nth-child(3)::before { content: "Harga"; font-weight: 500; color: var(--text-main); }
+    #admin-menu-table-body td:nth-child(4)::before { content: "Status"; font-weight: 500; color: var(--text-main); }
+
+    /* Actions Cell */
+    #admin-menu-table-body td:last-child {
+        margin-top: 0.5rem;
+        padding-top: 1rem !important;
+        border-top: 1px dashed #e5e7eb !important;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        justify-content: stretch;
+    }
+    
+    #admin-menu-table-body td:last-child button {
+        margin: 0 !important;
+        width: 100%;
+        padding: 0.6rem !important;
+        justify-content: center;
+    }
+    
+    #admin-menu-table-body tr td:last-child button:last-child {
+        grid-column: 1 / -1; /* Make +Sub-Menu button full width if there's 3 buttons */
+    }
+    
+    #admin-menu-table-body tr td:last-child::before {
+        display: none;
+    }
 }

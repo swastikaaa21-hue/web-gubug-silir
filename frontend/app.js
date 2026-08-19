@@ -156,6 +156,16 @@ const app = {
             }
         });
         
+        // Hide navbar if admin view
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            if (viewId === 'admin') {
+                navbar.style.display = 'none';
+            } else {
+                navbar.style.display = 'flex';
+            }
+        }
+        
         state.currentView = viewId;
         this.updateCartCount(); // re-evaluate floating cart visibility
         window.scrollTo(0, 0);
@@ -812,6 +822,7 @@ const app = {
                 <td style="padding: 1rem;">${main.is_active ? '<span style="color:green;font-weight:bold;">Aktif</span>' : '<span style="color:red;">Disembunyikan</span>'}</td>
                 <td style="padding: 1rem; text-align: right;">
                     <button onclick='app.editMenu(${JSON.stringify(main).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer; margin-right: 0.5rem;">Edit</button>
+                    <button onclick='app.triggerImageUpload(${main.id})' style="background:#3b82f6;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer; margin-right: 0.5rem;"><i data-lucide="image" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> Gambar</button>
                     <button onclick='app.showAddSubMenuModal("${main.name}")' style="background:#10b981;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">+ Sub-Menu</button>
                 </td>
             </tr>`;
@@ -825,7 +836,8 @@ const app = {
                     <td style="padding: 0.75rem 1rem; color: #4b5563;">${this.formatMoney(variant.price)}</td>
                     <td style="padding: 0.75rem 1rem;">${variant.is_active ? '<span style="color:green;font-size:0.9em;">Aktif</span>' : '<span style="color:red;font-size:0.9em;">Disembunyikan</span>'}</td>
                     <td style="padding: 0.75rem 1rem; text-align: right;">
-                        <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Edit</button>
+                        <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;margin-right: 0.5rem;">Edit</button>
+                        <button onclick='app.triggerImageUpload(${variant.id})' style="background:#3b82f6;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Gambar</button>
                     </td>
                 </tr>`;
             });
@@ -845,7 +857,8 @@ const app = {
                 <td style="padding: 0.75rem 1rem; color: #4b5563;">${this.formatMoney(variant.price)}</td>
                 <td style="padding: 0.75rem 1rem;">${variant.is_active ? '<span style="color:green;font-size:0.9em;">Aktif</span>' : '<span style="color:red;font-size:0.9em;">Disembunyikan</span>'}</td>
                 <td style="padding: 0.75rem 1rem; text-align: right;">
-                    <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Edit</button>
+                    <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;margin-right:0.5rem;">Edit</button>
+                    <button onclick='app.triggerImageUpload(${variant.id})' style="background:#3b82f6;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Gambar</button>
                 </td>
             </tr>`;
         });
@@ -1002,6 +1015,46 @@ const app = {
         } catch(e) {
             console.error(e);
             alert('Terjadi kesalahan');
+        }
+    },
+
+    currentUploadMenuId: null,
+
+    triggerImageUpload(id) {
+        this.currentUploadMenuId = id;
+        document.getElementById('admin-image-upload').click();
+    },
+
+    async uploadMenuImage(event) {
+        const file = event.target.files[0];
+        if (!file || !this.currentUploadMenuId) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            this.showToast('Mengupload gambar...', 'info');
+            const res = await fetch(`/api/admin/menu/${this.currentUploadMenuId}/image`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.adminToken}`
+                },
+                body: formData
+            });
+
+            if (res.ok) {
+                this.showToast('Gambar berhasil diupload', 'success');
+                this.loadAdminMenu();
+                fetchMenu();
+            } else {
+                const data = await res.json();
+                this.showToast(data.detail || 'Gagal mengupload gambar', 'error');
+            }
+        } catch (e) {
+            console.error(e);
+            this.showToast('Terjadi kesalahan saat upload', 'error');
+        } finally {
+            event.target.value = ''; // Reset input
         }
     }
 };

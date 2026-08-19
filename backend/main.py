@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, UploadFile, File
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import midtransclient
 import jwt
 from datetime import datetime, timedelta, timezone
+import uuid
 load_dotenv()
 
 app = FastAPI(title="Gubug Silir API")
@@ -188,6 +189,28 @@ def update_admin_menu(item_id: int, item: MenuItemCreate, token: dict = Depends(
     data = item.dict()
     res = supabase.table("menu_items").update(data).eq("id", item_id).execute()
     return {"success": True, "data": res.data[0]}
+
+@app.post("/api/admin/menu/{item_id}/image")
+async def upload_menu_image(item_id: int, file: UploadFile = File(...), token: dict = Depends(verify_admin_token)):
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    
+    content = await file.read()
+    ext = file.filename.split('.')[-1] if '.' in file.filename else 'jpg'
+    filename = f"{item_id}_{uuid.uuid4().hex}.{ext}"
+    
+    try:
+        supabase.storage.from_("menu-images").upload(
+            path=filename,
+            file=content,
+            file_options={"content-type": file.content_type}
+        )
+        public_url = supabase.storage.from_("menu-images").get_public_url(filename)
+        supabase.table("menu_items").update({"image": public_url}).eq("id", item_id).execute()
+        return {"success": True, "image_url": public_url}
+    except Exception as e:
+        print(f"Failed to upload image: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 from datetime import datetime, timedelta, timezone
 
