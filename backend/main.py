@@ -190,6 +190,58 @@ def update_admin_menu(item_id: int, item: MenuItemCreate, token: dict = Depends(
     res = supabase.table("menu_items").update(data).eq("id", item_id).execute()
     return {"success": True, "data": res.data[0]}
 
+@app.delete("/api/admin/menu/{item_id}")
+def delete_admin_menu(item_id: int, token: dict = Depends(verify_admin_token)):
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    try:
+        # Delete related order_items first to avoid foreign key constraint errors
+        supabase.table("order_items").delete().eq("menu_item_id", item_id).execute()
+
+        # Get menu item to check for image
+        item_res = supabase.table("menu_items").select("image, name, category").eq("id", item_id).execute()
+        if not item_res.data:
+            raise HTTPException(status_code=404, detail="Menu tidak ditemukan")
+
+        item_data = item_res.data[0]
+
+        # Try to delete image from storage if exists
+        if item_data.get("image") and "menu-images" in item_data["image"]:
+            try:
+                # Extract filename from the public URL
+                img_url = item_data["image"]
+                filename = img_url.split("/menu-images/")[-1].split("?")[0]
+                supabase.storage.from_("menu-images").remove([filename])
+            except Exception as img_err:
+                print(f"Failed to delete image from storage: {img_err}")
+
+        # If this is a main menu, also delete all its sub-menus (variants)
+        variant_category = f"Varian - {item_data['name']}"
+        if not item_data["category"].startswith("Varian - "):
+            variants = supabase.table("menu_items").select("id, image").eq("category", variant_category).execute()
+            for variant in variants.data:
+                # Delete order_items for each variant
+                supabase.table("order_items").delete().eq("menu_item_id", variant["id"]).execute()
+                # Delete variant image from storage
+                if variant.get("image") and "menu-images" in variant["image"]:
+                    try:
+                        img_url = variant["image"]
+                        filename = img_url.split("/menu-images/")[-1].split("?")[0]
+                        supabase.storage.from_("menu-images").remove([filename])
+                    except Exception:
+                        pass
+            # Delete all variant menu items
+            supabase.table("menu_items").delete().eq("category", variant_category).execute()
+
+        # Delete the menu item itself
+        supabase.table("menu_items").delete().eq("id", item_id).execute()
+        return {"success": True, "message": "Menu berhasil dihapus"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Failed to delete menu: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/api/admin/menu/{item_id}/image")
 async def upload_menu_image(item_id: int, file: UploadFile = File(...), token: dict = Depends(verify_admin_token)):
     if not supabase:

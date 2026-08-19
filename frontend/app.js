@@ -156,13 +156,15 @@ const app = {
             }
         });
         
-        // Hide navbar if admin view
+        // Hide navbar if admin view, adjust body padding for fixed navbar
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             if (viewId === 'admin') {
                 navbar.style.display = 'none';
+                document.body.style.paddingTop = '0';
             } else {
                 navbar.style.display = 'flex';
+                document.body.style.paddingTop = '';
             }
         }
         
@@ -823,7 +825,8 @@ const app = {
                 <td style="padding: 1rem; text-align: right;">
                     <button onclick='app.editMenu(${JSON.stringify(main).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer; margin-right: 0.5rem;">Edit</button>
                     <button onclick='app.triggerImageUpload(${main.id})' style="background:#3b82f6;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer; margin-right: 0.5rem;"><i data-lucide="image" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> Gambar</button>
-                    <button onclick='app.showAddSubMenuModal("${main.name}")' style="background:#10b981;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">+ Sub-Menu</button>
+                    <button onclick='app.showAddSubMenuModal("${main.name}")' style="background:#10b981;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer; margin-right: 0.5rem;">+ Sub-Menu</button>
+                    <button onclick='app.confirmDeleteMenu(${main.id}, "${main.name.replace(/"/g, "&quot;")}", false)' style="background:#ef4444;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;"><i data-lucide="trash-2" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> Hapus</button>
                 </td>
             </tr>`;
             
@@ -837,7 +840,8 @@ const app = {
                     <td style="padding: 0.75rem 1rem;">${variant.is_active ? '<span style="color:green;font-size:0.9em;">Aktif</span>' : '<span style="color:red;font-size:0.9em;">Disembunyikan</span>'}</td>
                     <td style="padding: 0.75rem 1rem; text-align: right;">
                         <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;margin-right: 0.5rem;">Edit</button>
-                        <button onclick='app.triggerImageUpload(${variant.id})' style="background:#3b82f6;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Gambar</button>
+                        <button onclick='app.triggerImageUpload(${variant.id})' style="background:#3b82f6;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;margin-right: 0.5rem;">Gambar</button>
+                        <button onclick='app.confirmDeleteMenu(${variant.id}, "${variant.name.replace(/"/g, "&quot;")}", true)' style="background:#ef4444;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;"><i data-lucide="trash-2" style="width:12px;height:12px;display:inline-block;vertical-align:middle;"></i> Hapus</button>
                     </td>
                 </tr>`;
             });
@@ -858,7 +862,8 @@ const app = {
                 <td style="padding: 0.75rem 1rem;">${variant.is_active ? '<span style="color:green;font-size:0.9em;">Aktif</span>' : '<span style="color:red;font-size:0.9em;">Disembunyikan</span>'}</td>
                 <td style="padding: 0.75rem 1rem; text-align: right;">
                     <button onclick='app.editMenu(${JSON.stringify(variant).replace(/'/g, "&#39;")})' style="background:var(--primary);color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;margin-right:0.5rem;">Edit</button>
-                    <button onclick='app.triggerImageUpload(${variant.id})' style="background:#3b82f6;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;">Gambar</button>
+                    <button onclick='app.triggerImageUpload(${variant.id})' style="background:#3b82f6;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;margin-right:0.5rem;">Gambar</button>
+                    <button onclick='app.confirmDeleteMenu(${variant.id}, "${variant.name.replace(/"/g, "&quot;")}", true)' style="background:#ef4444;color:white;border:none;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;font-size:0.85em;"><i data-lucide="trash-2" style="width:12px;height:12px;display:inline-block;vertical-align:middle;"></i> Hapus</button>
                 </td>
             </tr>`;
         });
@@ -1055,6 +1060,48 @@ const app = {
             this.showToast('Terjadi kesalahan saat upload', 'error');
         } finally {
             event.target.value = ''; // Reset input
+        }
+    },
+
+    confirmDeleteMenu(id, name, isSubMenu) {
+        let message = `Apakah Anda yakin ingin menghapus "${name}"?`;
+        if (!isSubMenu) {
+            message += '\n\n⚠️ PERHATIAN: Semua sub-menu/varian dari menu ini juga akan ikut terhapus!';
+        }
+        message += '\n\nData yang sudah dihapus tidak bisa dikembalikan.';
+        
+        if (confirm(message)) {
+            this.deleteMenu(id);
+        }
+    },
+
+    async deleteMenu(id) {
+        try {
+            this.showToast('Menghapus menu...', 'info');
+            const res = await fetch(`/api/admin/menu/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${this.adminToken}`
+                }
+            });
+
+            if (res.status === 401) {
+                this.showToast('Sesi berakhir, silakan login kembali', 'error');
+                this.logoutAdmin();
+                return;
+            }
+
+            if (res.ok) {
+                this.showToast('Menu berhasil dihapus', 'success');
+                this.loadAdminMenu();
+                fetchMenu(); // Refresh public menu
+            } else {
+                const data = await res.json();
+                this.showToast(data.detail || 'Gagal menghapus menu', 'error');
+            }
+        } catch (e) {
+            console.error(e);
+            this.showToast('Terjadi kesalahan saat menghapus', 'error');
         }
     }
 };
